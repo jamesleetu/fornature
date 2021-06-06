@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "286501422436",
+    "firebase_url": "https://naturev1-db87e-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "naturev1-db87e",
+    "storage_bucket": "naturev1-db87e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:286501422436:android:cd06f38c7f5d544adc6671",
+        "android_client_info": {
+          "package_name": "com.chohaenggil.fornature"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "286501422436-85kkjegllmebqh3c7fh5qs1dclm4i93t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.chohaenggil.fornature",
+            "certificate_hash": "69fe44cf557322b9f1f4341702f1c1536c85ea22"
+          }
+        },
+        {
+          "client_id": "286501422436-ras0p45tic9btn74t3tlal30dm8j9rm1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUF9J_M-DeFmhdWGR7Xq08Wz4uiIfJXko"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "286501422436-ras0p45tic9btn74t3tlal30dm8j9rm1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
