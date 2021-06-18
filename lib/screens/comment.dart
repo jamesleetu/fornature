@@ -130,8 +130,8 @@ class _CommentsState extends State<Comments> {
   buildFullPost() {
     return Column(
       mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment:MainAxisAlignment.start,
-      crossAxisAlignment:CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
           height: 250.0,
@@ -141,11 +141,10 @@ class _CommentsState extends State<Comments> {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
-           
             children: [
               Column(
-                mainAxisAlignment:MainAxisAlignment.start,
-      crossAxisAlignment:CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     widget.post.description,

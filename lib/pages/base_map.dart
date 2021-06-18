@@ -151,9 +151,7 @@ class _BaseMapPageState extends State<BaseMapPage> {
     FirebaseFirestore.instance.collection('shops').get().then((value) {
       if (value.docs.isNotEmpty) {
         for (int i = 0; i < value.docs.length; i++) {
-          print(value.docs[i]);
-          print('위치 : ${value.docs[i].data()['location'].latitude},'
-              '${value.docs[i].data()['location'].longitude}');
+          print(value.docs[i].id);
           print('위치 : ${value.docs[i].data()['location'].latitude},'
               '${value.docs[i].data()['location'].longitude}');
           //if (Geolocator.distanceBetween(
@@ -460,6 +458,7 @@ class _BaseMapPageState extends State<BaseMapPage> {
     }
   }
 */
+
   _slidertap() {
     return Align(
       alignment: Alignment.topCenter,
@@ -479,8 +478,8 @@ class _BaseMapPageState extends State<BaseMapPage> {
           //padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
           child: Slider(
             min: 1000,
-            max: 20000,
-            divisions: 5,
+            max: 400000,
+            divisions: 10,
             value: _value,
             label: _label,
             activeColor: Colors.blue,
@@ -913,7 +912,21 @@ class _BaseMapPageState extends State<BaseMapPage> {
   void _onCameraChange(
       LatLng latLng, CameraChangeReason reason, bool isAnimated) async {
     if (searched == true) {
-      print("here!");
+      int pos = _markers.indexWhere((m) => m.position == LatLng(lat, long));
+      if (pos == -1) {
+        print("here!");
+        _markers.add(Marker(
+            markerId: _markers.length.toString(),
+            position: LatLng(lat, long),
+            width: 25,
+            height: 35,
+            captionText: placename,
+            captionMinZoom: 15,
+            onMarkerTab: _onMarkerTap));
+        //});
+        //}
+        setState(() {});
+      }
       final controller = await _controller.future;
       controller.moveCamera(
         CameraUpdate.toCameraPosition(
@@ -923,7 +936,7 @@ class _BaseMapPageState extends State<BaseMapPage> {
           ),
         ),
       );
-      detail = true;
+      //detail = true;
       searched = false;
     }
     print('카메라 움직임 >>> 위치 : ${latLng.latitude}, ${latLng.longitude}'
