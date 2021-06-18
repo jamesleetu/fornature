@@ -1,0 +1,26 @@
+{
+  "name": "fornature",
+  "version": "1.0.0",
+  "description": "* Any Operating System (ie. MacOS X, Linux, Windows)\r * Any IDE with Flutter SDK installed (ie. IntelliJ, Android Studio, VSCode etc)",
+  "main": "kakaOpayNodejs.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jamesleetu/fornature.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jamesleetu/fornature/issues"
+  },
+  "homepage": "https://github.com/jamesleetu/fornature#readme",
+  "dependencies": {
+    "express": "4.17.1"
+  }
+}

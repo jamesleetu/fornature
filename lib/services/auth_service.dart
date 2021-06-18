@@ -12,29 +12,27 @@ class AuthService {
       {String name,
       User user,
       String email,
-      String country,
+      String bio,
       String password}) async {
     var res = await firebaseAuth.createUserWithEmailAndPassword(
       email: '$email',
       password: '$password',
     );
     if (res.user != null) {
-      await saveUserToFirestore(name, res.user, email, country);
+      await saveUserToFirestore(name, res.user, email, bio);
       return true;
     } else {
       return false;
     }
   }
 
-  saveUserToFirestore(
-      String name, User user, String email, String country) async {
+  saveUserToFirestore(String name, User user, String email, String bio) async {
     await usersRef.doc(user.uid).set({
       'username': name,
       'email': email,
       'time': Timestamp.now(),
       'id': user.uid,
-      'bio': "",
-      'country': country,
+      'bio': bio,
       'photoUrl': user.photoURL ?? ''
     });
   }

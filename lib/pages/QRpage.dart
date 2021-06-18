@@ -241,10 +241,10 @@ class _QrcodeScannerState extends State<QrcodeScanner> {
           .get()
           .then((DocumentSnapshot ds) {
         print(ds.get('Count'));
-        count = ds.get('Count')+1;
+        count = ds.get('Count') + 1;
       });
 
-       await visithistoryRef
+      await visithistoryRef
           .doc(currentUserId())
           .collection('visithistory')
           .doc(currentUserId())

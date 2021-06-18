@@ -58,7 +58,7 @@ class _TextFormBuilderState extends State<TextFormBuilder> {
                   accentColor: Theme.of(context).accentColor,
                 ),
                 child: TextFormField(
-                  textCapitalization: TextCapitalization.sentences,
+                  // textCapitalization: TextCapitalization.sentences,
                   initialValue: widget.initialValue,
                   enabled: widget.enabled,
                   onChanged: (val) {

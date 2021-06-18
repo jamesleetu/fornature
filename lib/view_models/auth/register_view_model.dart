@@ -9,10 +9,10 @@ class RegisterViewModel extends ChangeNotifier {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   bool validate = false;
   bool loading = false;
-  String username, email, country, password, cPassword;
+  String username, email, bio, password, cPassword;
   FocusNode usernameFN = FocusNode();
   FocusNode emailFN = FocusNode();
-  FocusNode countryFN = FocusNode();
+  FocusNode bioFN = FocusNode();
   FocusNode passFN = FocusNode();
   FocusNode cPassFN = FocusNode();
   AuthService auth = AuthService();
@@ -23,7 +23,7 @@ class RegisterViewModel extends ChangeNotifier {
     if (!form.validate()) {
       validate = true;
       notifyListeners();
-      showInSnackBar('Please fix the errors in red before submitting.');
+      showInSnackBar('가입을 위해 올바른 정보를 입력하세요.');
     } else {
       if (password == cPassword) {
         loading = true;
@@ -32,8 +32,8 @@ class RegisterViewModel extends ChangeNotifier {
           bool success = await auth.createUser(
             name: username,
             email: email,
+            bio: bio,
             password: password,
-            country: country,
           );
           print(success);
           if (success) {
@@ -49,7 +49,7 @@ class RegisterViewModel extends ChangeNotifier {
         loading = false;
         notifyListeners();
       } else {
-        showInSnackBar('The passwords does not match');
+        showInSnackBar('비밀번호가 일치하지 않습니다.');
       }
     }
   }
@@ -69,13 +69,13 @@ class RegisterViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  setConfirmPass(val) {
-    cPassword = val;
+  setBio(val) {
+    bio = val;
     notifyListeners();
   }
 
-  setCountry(val) {
-    country = val;
+  setConfirmPass(val) {
+    cPassword = val;
     notifyListeners();
   }
 

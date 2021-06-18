@@ -1,3 +1,7 @@
+/* Dark mode / Light mode 선택 기능 */
+
+
+/*
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -66,3 +70,4 @@ class _SettingState extends State<Setting> {
     );
   }
 }
+*/

@@ -1,3 +1,6 @@
+/* base_map.dart로 대체 */
+
+/*
 import 'package:flutter/material.dart';
 
 class Mapping extends StatefulWidget {
@@ -9,9 +12,10 @@ class _MappingState extends State<Mapping> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body : 
-    Center(child: 
-    Text("Mapping"),)
-    );
+        backgroundColor: Colors.white,
+        body: Center(
+          child: Text("Mapping"),
+        ));
   }
 }
+*/

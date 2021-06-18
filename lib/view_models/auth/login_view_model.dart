@@ -21,7 +21,7 @@ class LoginViewModel extends ChangeNotifier {
     if (!form.validate()) {
       validate = true;
       notifyListeners();
-      showInSnackBar('Please fix the errors in red before submitting.');
+      showInSnackBar('올바른 이메일과 비밀번호를 입력하세요.');
     } else {
       loading = true;
       notifyListeners();
@@ -32,8 +32,8 @@ class LoginViewModel extends ChangeNotifier {
         );
         print(success);
         if (success) {
-          Navigator.of(context).pushReplacement(
-              CupertinoPageRoute(builder: (_) => TabScreen()));
+          Navigator.of(context)
+              .pushReplacement(CupertinoPageRoute(builder: (_) => TabScreen()));
         }
       } catch (e) {
         loading = false;
@@ -53,12 +53,11 @@ class LoginViewModel extends ChangeNotifier {
     form.save();
     print(Validations.validateEmail(email));
     if (Validations.validateEmail(email) != null) {
-      showInSnackBar('Please input a valid email to reset your password.');
+      showInSnackBar('비밀번호 찾기를 위해 올바른 이메일을 입력하세요.');
     } else {
       try {
         await auth.forgotPassword(email);
-        showInSnackBar('Please check your email for instructions '
-            'to reset your password');
+        showInSnackBar('비밀번호 재설정을 위한 메일이 발송되었습니다.');
       } catch (e) {
         showInSnackBar('${e.toString()}');
       }

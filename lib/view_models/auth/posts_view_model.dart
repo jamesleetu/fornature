@@ -10,7 +10,6 @@ import 'package:fornature/models/post.dart';
 import 'package:fornature/screens/mainscreen.dart';
 import 'package:fornature/services/post_service.dart';
 import 'package:fornature/services/user_service.dart';
-import 'package:fornature/utils/constants.dart';
 import 'package:fornature/utils/firebase.dart';
 
 class PostsViewModel extends ChangeNotifier {
@@ -89,7 +88,7 @@ class PostsViewModel extends ChangeNotifier {
   }
 
   //Functions
-  pickImage({bool camera = false}) async {
+  pickImage({bool camera = false, bool nopic = false}) async {
     loading = true;
     notifyListeners();
     try {
@@ -106,9 +105,9 @@ class PostsViewModel extends ChangeNotifier {
           CropAspectRatioPreset.ratio16x9
         ],
         androidUiSettings: AndroidUiSettings(
-          toolbarTitle: 'Crop Image',
-          toolbarColor: Constants.lightAccent,
-          toolbarWidgetColor: Colors.white,
+          toolbarTitle: '사진 편집',
+          toolbarColor: Colors.white,
+          toolbarWidgetColor: Colors.black,
           initAspectRatio: CropAspectRatioPreset.original,
           lockAspectRatio: false,
         ),
@@ -122,7 +121,7 @@ class PostsViewModel extends ChangeNotifier {
     } catch (e) {
       loading = false;
       notifyListeners();
-      showInSnackBar('Cancelled');
+      showInSnackBar('취소');
     }
   }
 
@@ -162,14 +161,14 @@ class PostsViewModel extends ChangeNotifier {
       print(e);
       loading = false;
       resetPost();
-      showInSnackBar('Uploaded successfully!');
+      showInSnackBar('게시물이 성공적으로 등록되었습니다!');
       notifyListeners();
     }
   }
 
   uploadProfilePicture(BuildContext context) async {
     if (mediaUrl == null) {
-      showInSnackBar('Please select an image');
+      showInSnackBar('프로필 사진을 등록하세요.');
     } else {
       try {
         loading = true;
@@ -183,7 +182,7 @@ class PostsViewModel extends ChangeNotifier {
       } catch (e) {
         print(e);
         loading = false;
-        showInSnackBar('Uploaded successfully!');
+        showInSnackBar('프로필이 성공적으로 등록되었습니다!');
         notifyListeners();
       }
     }

@@ -1,3 +1,7 @@
+/* 알림 누르면 해당하는 유저의 프로필 / 게시물 보여주는 기능*/
+/* 유저 프로필 보여주는 기능에서 오류 발생 */
+
+/*
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -56,7 +60,8 @@ class _ViewActivityDetailsState extends State<ViewActivityDetails> {
                 Icon(Feather.clock, size: 13.0),
                 SizedBox(width: 3.0),
                 Text(
-                  timeago.format(widget.activity.timestamp.toDate()),
+                  timeago.format(widget.activity.timestamp.toDate(),
+                      locale: 'ko'),
                 ),
               ],
             ),
@@ -95,3 +100,4 @@ class _ViewActivityDetailsState extends State<ViewActivityDetails> {
     );
   }
 }
+*/

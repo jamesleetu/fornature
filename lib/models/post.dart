@@ -11,7 +11,6 @@ class PostModel {
   // dynamic likesCount;
   // dynamic likes;
   Timestamp timestamp;
-  
 
   PostModel({
     this.id,
@@ -30,7 +29,7 @@ class PostModel {
     postId = json['postId'];
     ownerId = json['ownerId'];
     location = json['location'];
-    username= json['username'];
+    username = json['username'];
     description = json['description'];
     mediaUrl = json['mediaUrl'];
     // likesCount = json['likes'].length ?? 0;

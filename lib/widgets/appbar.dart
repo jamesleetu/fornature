@@ -1,9 +1,11 @@
+/*
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 
 AppBar header(context) {
   return AppBar(
-    title: Text('ChoHaengGil'),
+    backgroundColor: Colors.white,
+    title: Text('초행길'),
     centerTitle: true,
     actions: [
       Padding(
@@ -13,3 +15,4 @@ AppBar header(context) {
     ],
   );
 }
+*/

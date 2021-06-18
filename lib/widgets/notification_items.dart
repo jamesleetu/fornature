@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fornature/models/notification.dart';
 import 'package:fornature/utils/firebase.dart';
-import 'package:fornature/widgets/view_notification_details.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import 'package:fornature/widgets/indicators.dart';
@@ -30,17 +29,18 @@ class _ActivityItemsState extends State<ActivityItems> {
       child: Column(
         children: [
           ListTile(
-            onTap: () {
-              Navigator.of(context).push(CupertinoPageRoute(
-                builder: (_) => ViewActivityDetails(activity: widget.activity),
-              ));
-            },
+            contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
+            // onTap: () {
+            //   Navigator.of(context).push(CupertinoPageRoute(
+            //     builder: (_) => ViewActivityDetails(activity: widget.activity),
+            //   ));
+            // },
             leading: CircleAvatar(
               radius: 25.0,
               backgroundImage: NetworkImage(widget.activity.userDp),
             ),
             title: RichText(
-              overflow: TextOverflow.ellipsis,
+              overflow: TextOverflow.clip,
               text: TextSpan(
                 style: TextStyle(
                   color: Colors.black,
@@ -50,21 +50,22 @@ class _ActivityItemsState extends State<ActivityItems> {
                   TextSpan(
                     text: '${widget.activity.username} ',
                     style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 10.0),
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 14.0),
                   ),
                   TextSpan(
                     text: buildTextConfiguration(),
-                    style: TextStyle(fontSize: 10.0),
+                    style: TextStyle(fontSize: 14.0),
                   ),
                 ],
               ),
             ),
             subtitle: Text(
-              timeago.format(widget.activity.timestamp.toDate()),
+              timeago.format(widget.activity.timestamp.toDate(), locale: 'ko'),
+              textScaleFactor: 0.9,
             ),
             trailing: previewConfiguration(),
           ),
-          Divider(),
+          Divider(height: 5.0),
         ],
       ),
     );
@@ -74,7 +75,7 @@ class _ActivityItemsState extends State<ActivityItems> {
     return Container(
       alignment: Alignment.centerRight,
       padding: EdgeInsets.only(right: 20.0),
-      color: Theme.of(context).accentColor,
+      color: Colors.red,
       child: Icon(
         CupertinoIcons.delete,
         color: Colors.white,
@@ -86,7 +87,7 @@ class _ActivityItemsState extends State<ActivityItems> {
     notificationRef
         .doc(firebaseAuth.currentUser.uid)
         .collection('notifications')
-        .doc(widget.activity.postId)
+        .doc(widget.activity.postId) // 값이 안 맞는 경우가 생김.. 이 경우 delete 못 함
         .get()
         .then((doc) => {
               if (doc.exists)
@@ -106,13 +107,13 @@ class _ActivityItemsState extends State<ActivityItems> {
 
   buildTextConfiguration() {
     if (widget.activity.type == "like") {
-      return "liked your post";
+      return "님이 회원님의 사진을 좋아합니다.";
     } else if (widget.activity.type == "follow") {
-      return "is following you";
+      return "님이 회원님을 팔로우합니다.";
     } else if (widget.activity.type == "comment") {
-      return "commented '${widget.activity.commentData}'";
+      return "님이 댓글을 남겼습니다. \"${widget.activity.commentData}\"";
     } else {
-      return "Error: Unknown type '${widget.activity.type}'";
+      return "오류: 알 수 없는 활동 '${widget.activity.type}'";
     }
   }
 
@@ -127,9 +128,9 @@ class _ActivityItemsState extends State<ActivityItems> {
         errorWidget: (context, url, error) {
           return Icon(Icons.error);
         },
-        height: 40.0,
+        height: 45.0,
         fit: BoxFit.cover,
-        width: 40.0,
+        width: 45.0,
       ),
     );
   }

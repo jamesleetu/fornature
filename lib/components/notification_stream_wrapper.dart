@@ -31,14 +31,13 @@ class ActivityStreamWrapper extends StatelessWidget {
       stream: stream,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          // var list = snapshot.data.documents.toList();
           var list = snapshot.data.docs.toList();
           return list.length == 0
               ? Container(
                   child: Center(
                     child: Padding(
                       padding: const EdgeInsets.only(top: 250.0),
-                      child: Text('No Recent Activities'),
+                      child: Text('최근 활동 없음'),
                     ),
                   ),
                 )

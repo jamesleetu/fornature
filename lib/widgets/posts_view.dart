@@ -2,8 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-
-//import 'package:like_button/like_button.dart';
 import 'package:fornature/models/post.dart';
 import 'package:fornature/models/user.dart';
 import 'package:fornature/pages/profile.dart';
@@ -68,7 +66,9 @@ class _PostsState extends State<Posts> {
                   child: Row(
                     children: [
                       Text(
-                        timeago.format(widget.post.timestamp.toDate()),
+                        // timeago.format(widget.post.timestamp.toDate()),
+                        timeago.format(widget.post.timestamp.toDate(),
+                            locale: 'ko'),
                       ),
                       SizedBox(width: 3.0),
                       StreamBuilder(
@@ -158,27 +158,26 @@ class _PostsState extends State<Posts> {
   Widget buildPostHeader() {
     bool isMe = currentUserId() == widget.post.ownerId;
     return ListTile(
-        contentPadding: EdgeInsets.symmetric(horizontal: 5.0),
-        leading: buildUserDp(),
-        title: Text(
-    widget.post.username,
-    style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        subtitle: Text(
-    widget.post.location == null ? 'Wooble' : widget.post.location,
-        ),
-        trailing: isMe
-      ? IconButton(
-          icon: Icon(Feather.more_horizontal),
-          onPressed: () => handleDelete(context),
-        )
-      : IconButton(
-          ///Feature coming soon
-          icon: Icon(CupertinoIcons.bookmark, size: 25.0),
-          onPressed: () {},
-        ),
-      );
-
+      contentPadding: EdgeInsets.symmetric(horizontal: 5.0),
+      leading: buildUserDp(),
+      title: Text(
+        widget.post.username,
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      subtitle: Text(
+        widget.post.location == null ? '초행길' : widget.post.location,
+      ),
+      trailing: isMe
+          ? IconButton(
+              icon: Icon(Feather.more_horizontal),
+              onPressed: () => handleDelete(context),
+            )
+          : IconButton(
+              ///Feature coming soon
+              icon: Icon(CupertinoIcons.bookmark, size: 25.0),
+              onPressed: () {},
+            ),
+    );
   }
 
   buildUserDp() {

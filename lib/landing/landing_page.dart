@@ -12,109 +12,83 @@ class _LandingState extends State<Landing> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
+      // 메인 로고
       body: Container(
         height: MediaQuery.of(context).size.height,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Align(
-              alignment: Alignment.center,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10.0),
-                child: Image.asset(
-                  'assets/images/new1.png',
-                  height: 200.0,
-                  width: 200.0,
-                  fit: BoxFit.cover,
-                ),
+            Center(
+              child: Image.asset(
+                'assets/images/logo.png',
+                height: 150.0,
+                width: 150.0,
+                fit: BoxFit.cover,
               ),
             ),
+            SizedBox(height: 10.0),
             Text(
-              'WOOBLE',
+              '초록 행성을 위한 길',
               style: TextStyle(
-                fontSize: 22.0,
-                fontWeight: FontWeight.w900,
-                fontFamily: 'Lato-Regular',
+                fontSize: 26.0,
+                fontFamily: 'SangSangFlowerRoad',
               ),
             )
           ],
         ),
       ),
       bottomNavigationBar: BottomAppBar(
+        color: Colors.white,
         elevation: 0.0,
-        child: Padding(
-          padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pushReplacement(
-                    CupertinoPageRoute(
-                      builder: (_) => Login(),
-                    ),
-                  );
-                },
-                child: Container(
-                  height: 45.0,
-                  width: 130.0,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(40.0),
-                    border: Border.all(color: Colors.grey),
-                    gradient: LinearGradient(
-                      begin: Alignment.topRight,
-                      end: Alignment.bottomLeft,
-                      colors: [
-                        Theme.of(context).accentColor,
-                        Color(0xff597FDB),
-                      ],
-                    ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).pushReplacement(
+                  CupertinoPageRoute(
+                    builder: (_) => Login(),
                   ),
-                  child: Center(
-                    child: Text(
-                      'LOGIN',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w900,
-                        color: Colors.white,
-                      ),
+                );
+              },
+              // 로그인 버튼
+              child: Container(
+                height: 80.0,
+                width: 180.0,
+                child: Center(
+                  child: Text(
+                    '로그인',
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      color: Colors.black,
                     ),
                   ),
                 ),
               ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pushReplacement(
-                      CupertinoPageRoute(builder: (_) => Register()));
-                },
-                child: Container(
-                  height: 45.0,
-                  width: 130.0,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(40.0),
-                    border: Border.all(color: Colors.white),
-                    gradient: LinearGradient(
-                      begin: Alignment.topRight,
-                      end: Alignment.bottomLeft,
-                      colors: [
-                        Theme.of(context).accentColor,
-                        Color(0xff597FDB),
-                      ],
-                    ),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'SIGN UP',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w900,
-                        color: Colors.white,
-                      ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).pushReplacement(
+                    CupertinoPageRoute(builder: (_) => Register()));
+              },
+              // 회원가입 버튼
+              child: Container(
+                height: 80.0,
+                width: 180.0,
+                child: Center(
+                  child: Text(
+                    '회원가입',
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      color: Colors.black,
                     ),
                   ),
                 ),
-              )
-            ],
-          ),
+              ),
+            )
+          ],
         ),
       ),
     );

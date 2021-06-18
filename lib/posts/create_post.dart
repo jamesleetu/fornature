@@ -32,8 +32,10 @@ class _CreatePostState extends State<CreatePost> {
         progressIndicator: circularProgress(context),
         inAsyncCall: viewModel.loading,
         child: Scaffold(
+          backgroundColor: Colors.white,
           key: viewModel.scaffoldKey,
           appBar: AppBar(
+            backgroundColor: Colors.white,
             leading: IconButton(
               icon: Icon(Feather.x),
               onPressed: () {
@@ -41,7 +43,7 @@ class _CreatePostState extends State<CreatePost> {
                 Navigator.pop(context);
               },
             ),
-            title: Text('Make a Post'.toUpperCase()),
+            title: Text('새 게시물'),
             centerTitle: true,
             actions: [
               GestureDetector(
@@ -51,13 +53,11 @@ class _CreatePostState extends State<CreatePost> {
                   viewModel.resetPost();
                 },
                 child: Padding(
-                  padding: const EdgeInsets.all(20.0),
+                  padding: const EdgeInsets.all(17.0),
                   child: Text(
-                    'Post'.toUpperCase(),
+                    '저장',
                     style: TextStyle(
-                      fontWeight: FontWeight.bold,
                       fontSize: 15.0,
-                      color: Theme.of(context).accentColor,
                     ),
                   ),
                 ),
@@ -65,9 +65,8 @@ class _CreatePostState extends State<CreatePost> {
             ],
           ),
           body: ListView(
-            padding: EdgeInsets.symmetric(horizontal: 15.0),
+            padding: EdgeInsets.symmetric(horizontal: 20.0),
             children: [
-              SizedBox(height: 15.0),
               StreamBuilder(
                 stream: usersRef.doc(currentUserId()).snapshots(),
                 builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
@@ -92,67 +91,57 @@ class _CreatePostState extends State<CreatePost> {
               ),
               InkWell(
                 onTap: () => showImageChoices(context, viewModel),
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.width - 30,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(5.0),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 40.0, vertical: 20.0),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.width - 100,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10.0),
+                      ),
                     ),
-                    border: Border.all(
-                      color: Theme.of(context).accentColor,
-                    ),
-                  ),
-                  child: viewModel.imgLink != null
-                      ? CustomImage(
-                          imageUrl: viewModel.imgLink,
-                          width: MediaQuery.of(context).size.width,
-                          height: MediaQuery.of(context).size.width - 30,
-                          fit: BoxFit.cover,
-                        )
-                      : viewModel.mediaUrl == null
-                          ? Center(
-                              child: Text(
-                                'Upload a Photo',
-                                style: TextStyle(
-                                  color: Theme.of(context).accentColor,
-                                ),
+                    child: viewModel.imgLink != null
+                        ? CustomImage(
+                            imageUrl: viewModel.imgLink,
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.width - 30,
+                            fit: BoxFit.cover,
+                          )
+                        : viewModel.mediaUrl == null
+                            ? Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.camera_alt,
+                                    size: 60.0,
+                                  ),
+                                  Text(
+                                    '사진을 등록하세요',
+                                  ),
+                                ],
+                              )
+                            : Image.file(
+                                viewModel.mediaUrl,
+                                width: MediaQuery.of(context).size.width,
+                                height: MediaQuery.of(context).size.width - 30,
+                                fit: BoxFit.cover,
                               ),
-                            )
-                          : Image.file(
-                              viewModel.mediaUrl,
-                              width: MediaQuery.of(context).size.width,
-                              height: MediaQuery.of(context).size.width - 30,
-                              fit: BoxFit.cover,
-                            ),
-                ),
-              ),
-              SizedBox(height: 20.0),
-              Text(
-                'Post Caption'.toUpperCase(),
-                style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
               TextFormField(
                 initialValue: viewModel.description,
                 decoration: InputDecoration(
-                  hintText: 'Eg. This is very beautiful place!',
+                  hintText: '설명 추가',
                   focusedBorder: UnderlineInputBorder(),
                 ),
                 maxLines: null,
                 onChanged: (val) => viewModel.setDescription(val),
               ),
-              SizedBox(height: 20.0),
-              Text(
-                'Location'.toUpperCase(),
-                style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
+              SizedBox(height: 15.0),
               ListTile(
                 contentPadding: EdgeInsets.all(0.0),
                 title: Container(
@@ -161,7 +150,7 @@ class _CreatePostState extends State<CreatePost> {
                     controller: viewModel.locationTEC,
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.all(0.0),
-                      hintText: 'United States,Los Angeles!',
+                      hintText: '위치 추가',
                       focusedBorder: UnderlineInputBorder(),
                     ),
                     maxLines: null,
@@ -169,7 +158,7 @@ class _CreatePostState extends State<CreatePost> {
                   ),
                 ),
                 trailing: IconButton(
-                  tooltip: "Use your current location",
+                  tooltip: "현재 위치를 추가하세요",
                   icon: Icon(
                     CupertinoIcons.map_pin_ellipse,
                     size: 25.0,
@@ -190,36 +179,48 @@ class _CreatePostState extends State<CreatePost> {
     showModalBottomSheet(
       context: context,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(10.0))),
       builder: (BuildContext context) {
         return FractionallySizedBox(
-          heightFactor: .6,
+          heightFactor: .45,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 20.0),
+              SizedBox(height: 16.0),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                padding: EdgeInsets.only(left: 20.0, bottom: 8.0),
                 child: Text(
-                  'Select Image',
+                  '선택하기',
                   style: TextStyle(
+                    fontSize: 16.0,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
               Divider(),
               ListTile(
-                leading: Icon(Feather.camera),
-                title: Text('Camera'),
+                leading: Icon(
+                  Feather.camera,
+                  size: 25.0,
+                ),
+                title: Transform.translate(
+                  offset: Offset(-16, 0),
+                  child: Text('사진 찍기'),
+                ),
                 onTap: () {
                   Navigator.pop(context);
                   viewModel.pickImage(camera: true);
                 },
               ),
               ListTile(
-                leading: Icon(Feather.image),
-                title: Text('Gallery'),
+                leading: Icon(
+                  Feather.image,
+                  size: 25.0,
+                ),
+                title: Transform.translate(
+                  offset: Offset(-16, 0),
+                  child: Text('사진 보관함'),
+                ),
                 onTap: () {
                   Navigator.pop(context);
                   viewModel.pickImage();

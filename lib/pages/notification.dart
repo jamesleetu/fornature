@@ -19,16 +19,17 @@ class _ActivitiesState extends State<Activities> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         leading: IconButton(
-              icon: Icon(Feather.x),
-              onPressed: () {
-              
-                Navigator.pop(context);
-              },
-            ),
+          icon: Icon(Feather.x),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         automaticallyImplyLeading: false,
-        title: Text('Notifications'),
+        title: Text('알림'),
         centerTitle: true,
         actions: [
           Padding(
@@ -36,10 +37,9 @@ class _ActivitiesState extends State<Activities> {
             child: GestureDetector(
               onTap: () => deleteAllItems(),
               child: Text(
-                'CLEAR',
+                '지우기',
                 style: TextStyle(
                   fontSize: 13.0,
-                  fontWeight: FontWeight.w900,
                   color: Theme.of(context).accentColor,
                 ),
               ),
@@ -75,7 +75,7 @@ class _ActivitiesState extends State<Activities> {
   }
 
   deleteAllItems() async {
-//delete all notifications associated with the authenticated user
+// delete all notifications associated with the authenticated user
     QuerySnapshot notificationsSnap = await notificationRef
         .doc(firebaseAuth.currentUser.uid)
         .collection('notifications')

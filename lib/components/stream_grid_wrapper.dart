@@ -31,16 +31,14 @@ class StreamGridWrapper extends StatelessWidget {
       stream: stream,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          // var list = snapshot.data.documents.toList();
           var list = snapshot.data.docs.toList();
           return list.length == 0
               ? Center(
                   child: Padding(
-                    padding: const EdgeInsets.all(150.0),
+                    padding: const EdgeInsets.symmetric(vertical: 150.0),
                     child: Text(
-                      'No Posts Yet',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600, fontSize: 20.0),
+                      '게시물 없음',
+                      style: TextStyle(fontSize: 18.0),
                     ),
                   ),
                 )

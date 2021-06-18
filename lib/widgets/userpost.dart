@@ -3,7 +3,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-//import 'package:flutter_icons/flutter_icons.dart';
 import 'package:fornature/components/custom_card.dart';
 import 'package:fornature/components/custom_image.dart';
 import 'package:fornature/models/post.dart';
@@ -30,9 +29,8 @@ class UserPost extends StatelessWidget {
       onTap: null,
       borderRadius: BorderRadius.circular(10.0),
       child: OpenContainer(
-        //transitionType: ContainerTransitionType.fade,
         openBuilder: (BuildContext context, VoidCallback _) {
-          return ViewImage(post: post);
+          return Comments(post: post);
         },
         closedElevation: 0.0,
         closedShape: const RoundedRectangleBorder(
@@ -41,120 +39,106 @@ class UserPost extends StatelessWidget {
           ),
         ),
         onClosed: (v) {},
-        closedColor: Theme.of(context).cardColor,
         closedBuilder: (BuildContext context, VoidCallback openContainer) {
           return Stack(
             children: [
               Column(
                 children: [
                   ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10.0),
-                      topRight: Radius.circular(10.0),
-                    ),
                     child: CustomImage(
                       imageUrl: post?.mediaUrl ?? '',
-                      height: 250.0,
+                      height: MediaQuery.of(context).size.width - 10.0,
                       fit: BoxFit.cover,
                       width: double.infinity,
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal:5.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 5.0),
-                          child: Row(
-                            children: [
-                              buildLikeButton(),
-                              InkWell(
-                                borderRadius: BorderRadius.circular(10.0),
-                                onTap: () {
-                                  Navigator.of(context).push(
-                                    CupertinoPageRoute(
-                                      builder: (_) => Comments(post: post),
-                                    ),
-                                  );
-                                },
-                                child: Icon(
-                                   CupertinoIcons.chat_bubble,
-                                  size: 25.0,
-                                ),
-                              ),
-                            ],
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            width: 35.0,
+                            height: 35.0,
+                            child: buildLikeButton(),
                           ),
-                        ),
-                        Row(
-                          children: [
-                            Flexible(
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 5.0),
-                                child: StreamBuilder(
-                                  stream: likesRef
-                                      .where('postId', isEqualTo: post.postId)
-                                      .snapshots(),
-                                  builder: (context,
-                                      AsyncSnapshot<QuerySnapshot> snapshot) {
-                                    if (snapshot.hasData) {
-                                      QuerySnapshot snap = snapshot.data;
-                                      List<DocumentSnapshot> docs = snap.docs;
-                                      return buildLikesCount(
-                                          context, docs?.length ?? 0);
-                                    } else {
-                                      return buildLikesCount(context, 0);
-                                    }
-                                  },
+                          InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                CupertinoPageRoute(
+                                  builder: (_) => Comments(post: post),
                                 ),
+                              );
+                            },
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 2.0, top: 3.0),
+                              child: Icon(
+                                CupertinoIcons.chat_bubble,
+                                size: 20.0,
                               ),
                             ),
-                            SizedBox(width: 5.0),
-                            StreamBuilder(
-                              stream: commentRef
-                                  .doc(post.postId)
-                                  .collection("comments")
+                          ),
+                          Flexible(
+                            child: StreamBuilder(
+                              stream: likesRef
+                                  .where('postId', isEqualTo: post.postId)
                                   .snapshots(),
                               builder: (context,
                                   AsyncSnapshot<QuerySnapshot> snapshot) {
                                 if (snapshot.hasData) {
                                   QuerySnapshot snap = snapshot.data;
                                   List<DocumentSnapshot> docs = snap.docs;
-                                  return buildCommentsCount(
+                                  return buildLikesCount(
                                       context, docs?.length ?? 0);
                                 } else {
-                                  return buildCommentsCount(context, 0);
+                                  return buildLikesCount(context, 0);
                                 }
                               },
                             ),
-                          ],
-                        ),
-                        Visibility(
-                          visible: post.description!= null &&
-                              post.description.toString().isNotEmpty,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 5.0, top: 3.0),
-                            child: Text(
-                              '${post.description}',
-                              style: TextStyle(
-                                color:
-                                    Theme.of(context).textTheme.caption.color,
-                                fontSize: 15.0,
-                              ),
-                              maxLines: 2,
+                          ),
+                          StreamBuilder(
+                            stream: commentRef
+                                .doc(post.postId)
+                                .collection("comments")
+                                .snapshots(),
+                            builder: (context,
+                                AsyncSnapshot<QuerySnapshot> snapshot) {
+                              if (snapshot.hasData) {
+                                QuerySnapshot snap = snapshot.data;
+                                List<DocumentSnapshot> docs = snap.docs;
+                                return buildCommentsCount(
+                                    context, docs?.length ?? 0);
+                              } else {
+                                return buildCommentsCount(context, 0);
+                              }
+                            },
+                          ),
+                        ],
+                      ),
+                      Visibility(
+                        visible: post.description != null &&
+                            post.description.toString().isNotEmpty,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10.0),
+                          child: Text(
+                            '${post.description}',
+                            style: TextStyle(
+                              fontSize: 14.0,
                             ),
+                            maxLines: 2,
                           ),
                         ),
-                        SizedBox(height: 3.0),
-                        Padding(
-                          padding: const EdgeInsets.all(3.0),
-                          child: Text(
-                      timeago.format(post.timestamp.toDate()),style:TextStyle(fontSize:10.0)
-                    ),
-                        ),
-                        // SizedBox(height: 5.0),
-                      ],
-                    ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 10.0, top: 3.0, bottom: 20.0),
+                        child: Text(
+                            timeago.format(post.timestamp.toDate(),
+                                locale: 'ko'),
+                            style: TextStyle(fontSize: 9.0)),
+                      ),
+                    ],
                   )
                 ],
               ),
@@ -192,10 +176,12 @@ class UserPost extends StatelessWidget {
             icon: docs.isEmpty
                 ? Icon(
                     CupertinoIcons.heart,
+                    size: 22.0,
                   )
                 : Icon(
                     CupertinoIcons.heart_fill,
                     color: Colors.red,
+                    size: 22.0,
                   ),
           );
         }
@@ -245,12 +231,11 @@ class UserPost extends StatelessWidget {
 
   buildLikesCount(BuildContext context, int count) {
     return Padding(
-      padding: const EdgeInsets.only(left: 7.0),
+      padding: const EdgeInsets.only(left: 10.0),
       child: Text(
-        '$count likes',
+        '좋아요 $count개',
         style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 10.0,
+          fontSize: 12.0,
         ),
       ),
     );
@@ -258,25 +243,15 @@ class UserPost extends StatelessWidget {
 
   buildCommentsCount(BuildContext context, int count) {
     return Padding(
-      padding: const EdgeInsets.only(top: 0.5),
+      padding: const EdgeInsets.only(left: 10.0),
       child: Text(
-        '-   $count comments',
-        style: TextStyle(fontSize: 8.5, fontWeight: FontWeight.bold),
+        '댓글 $count개',
+        style: TextStyle(
+          fontSize: 12.0,
+        ),
       ),
     );
   }
-  // buildCommentsCount(BuildContext context, int count) {
-  //   return Padding(
-  //     padding: const EdgeInsets.only(left: 7.0),
-  //     child: Text(
-  //       '$count comments',
-  //       style: TextStyle(
-  //         color: Theme.of(context).textTheme.caption.color.withOpacity(0.4),
-  //         fontSize: 10.0,
-  //       ),
-  //     ),
-  //   );
-  // }
 
   buildUser(BuildContext context) {
     bool isMe = currentUserId() == post.ownerId;
@@ -300,8 +275,7 @@ class UserPost extends StatelessWidget {
                   ),
                 ),
                 child: GestureDetector(
-                             onTap: () => showProfile(context, profileId: user?.id),
-
+                  onTap: () => showProfile(context, profileId: user?.id),
                   child: Padding(
                     padding: const EdgeInsets.only(left: 10.0),
                     child: Row(
@@ -318,7 +292,7 @@ class UserPost extends StatelessWidget {
                                 radius: 14.0,
                                 backgroundColor: Color(0xff4D4D4D),
                               ),
-                        SizedBox(width: 5.0),
+                        SizedBox(width: 10.0),
                         Column(
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -326,16 +300,16 @@ class UserPost extends StatelessWidget {
                             Text(
                               '${post.username}',
                               style: TextStyle(
+                                fontSize: 13.0,
                                 fontWeight: FontWeight.bold,
-                                color: Color(0xff4D4D4D),
                               ),
                               overflow: TextOverflow.ellipsis,
                             ),
+                            SizedBox(height: 2.0),
                             Text(
-                              '${post.location == null ? 'Wooble' : post.location}',
+                              '${post.location == null ? '' : post.location}',
                               style: TextStyle(
-                                fontSize: 10.0,
-                                color: Color(0xff4D4D4D),
+                                fontSize: 9.0,
                               ),
                             ),
                           ],
@@ -354,7 +328,7 @@ class UserPost extends StatelessWidget {
     );
   }
 
-showProfile(BuildContext context, {String profileId}) {
+  showProfile(BuildContext context, {String profileId}) {
     Navigator.push(
       context,
       CupertinoPageRoute(
@@ -363,5 +337,3 @@ showProfile(BuildContext context, {String profileId}) {
     );
   }
 }
-
-

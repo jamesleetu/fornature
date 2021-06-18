@@ -15,7 +15,7 @@ class ActivityModel {
   ActivityModel.fromJson(Map<String, dynamic> json) {
     type = json['type'];
     username = json['username'];
-    userId = json['userId']; 
+    userId = json['userId'];
     userDp = json['userDp'];
     postId = json['postId'];
     mediaUrl = json['mediaUrl'];

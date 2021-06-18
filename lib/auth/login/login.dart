@@ -27,53 +27,60 @@ class _LoginState extends State<Login> {
         backgroundColor: Colors.white,
         key: viewModel.scaffoldKey,
         body: ListView(
-          padding: EdgeInsets.symmetric(horizontal: 15.0),
+          padding: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width / 25,
+              vertical: MediaQuery.of(context).size.height / 4),
           children: [
-            SizedBox(height: 60.0),
+            // 로고
             Container(
-              height: 170.0,
+              height: 110.0,
               width: MediaQuery.of(context).size.width,
               child: Image.asset(
-                'assets/images/login.png',
+                'assets/images/logo.png',
               ),
             ),
-            SizedBox(height: 10.0),
+            // 환영 메시지
+            SizedBox(height: 12.0),
             Center(
               child: Text(
-                'Welcome back!',
+                '돌아오신 걸 환영해요!',
                 style: TextStyle(
                   fontSize: 23.0,
                   fontWeight: FontWeight.w900,
                 ),
               ),
             ),
+            SizedBox(height: 5.0),
             Center(
               child: Text(
-                'Log into your account and get started!',
+                '로그인하고 시작해볼까요?',
                 style: TextStyle(
-                  fontSize: 12.0,
-                  fontWeight: FontWeight.w300,
-                  color: Theme.of(context).accentColor,
+                  fontSize: 15.0,
                 ),
               ),
             ),
-            SizedBox(height: 25.0),
+            SizedBox(height: 30.0),
             buildForm(context, viewModel),
             SizedBox(height: 10.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Don\'t have an account?'),
+                Text(
+                  '계정이 없으신가요?  ',
+                  style: TextStyle(
+                    fontSize: 15.0,
+                  ),
+                ),
                 GestureDetector(
                   onTap: () {
                     Navigator.of(context)
                         .push(CupertinoPageRoute(builder: (_) => Register()));
                   },
                   child: Text(
-                    'Sign up',
+                    '가입하기',
                     style: TextStyle(
+                      fontSize: 15.0,
                       fontWeight: FontWeight.bold,
-                      color: Theme.of(context).accentColor,
                     ),
                   ),
                 ),
@@ -94,7 +101,7 @@ class _LoginState extends State<Login> {
           TextFormBuilder(
             enabled: !viewModel.loading,
             prefix: Feather.mail,
-            hintText: "Email",
+            hintText: "이메일",
             textInputAction: TextInputAction.next,
             validateFunction: Validations.validateEmail,
             onSaved: (String val) {
@@ -108,7 +115,7 @@ class _LoginState extends State<Login> {
             enabled: !viewModel.loading,
             prefix: Feather.lock,
             suffix: Feather.eye,
-            hintText: "Password",
+            hintText: "비밀번호",
             textInputAction: TextInputAction.done,
             validateFunction: Validations.validatePassword,
             submitAction: () => viewModel.login(context),
@@ -126,36 +133,35 @@ class _LoginState extends State<Login> {
                 onTap: () => viewModel.forgotPassword(),
                 child: Container(
                   width: 130,
-                  height: 40,
                   child: Align(
                     alignment: Alignment.centerRight,
                     child: Text(
-                      'Forgot Password?',
+                      '비밀번호 찾기',
                       style: TextStyle(
+                        fontSize: 13.0,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ), 
+                  ),
                 ),
               ),
             ),
           ),
           SizedBox(height: 10.0),
           Container(
-            height: 45.0,
+            height: 35.0,
             width: 180.0,
             child: RaisedButton(
-              highlightElevation: 4.0,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(40.0),
               ),
-              color: Theme.of(context).accentColor,
+              color: Colors.white,
               child: Text(
-                'Log in'.toUpperCase(),
+                '로그인',
                 style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 12.0,
-                  fontWeight: FontWeight.w600,
+                  fontSize: 15.0,
+                  fontWeight: FontWeight.w900,
+                  color: Colors.black,
                 ),
               ),
               onPressed: () => viewModel.login(context),

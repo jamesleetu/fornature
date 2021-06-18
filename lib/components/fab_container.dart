@@ -1,10 +1,9 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../pages/QRpage.dart';
-import '../pages/kakao.dart';
-import '../posts/create_post.dart';
-//import 'file:///C:/Users/success/fornature/lib/posts/create_post.dart';
+import 'package:fornature/pages/kakao.dart';
+import 'package:fornature/pages/qrcode.dart';
+import 'package:fornature/posts/create_post.dart';
 
 class FabContainer extends StatelessWidget {
   final Widget page;
@@ -47,39 +46,51 @@ class FabContainer extends StatelessWidget {
     return showModalBottomSheet(
       context: context,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(10.0))),
       builder: (BuildContext context) {
         return FractionallySizedBox(
-          heightFactor: .6,
+          heightFactor: .60,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 20.0),
+              SizedBox(height: 16.0),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: Center(
-                  child: Text(
-                    'SELECT',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).accentColor),
+                padding: EdgeInsets.only(left: 20.0, bottom: 8.0),
+                child: Text(
+                  '선택하기',
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
               Divider(),
               ListTile(
                 leading: Icon(
+                  CupertinoIcons.plus,
+                  size: 25.0,
+                ),
+                title: Transform.translate(
+                  offset: Offset(-16, 0),
+                  child: Text('새 게시물'),
+                ),
+                onTap: () {
+                  //  Navigator.pop(context);
+                  Navigator.of(context)
+                      .push(CupertinoPageRoute(builder: (_) => CreatePost()));
+                },
+              ),
+              ListTile(
+                leading: Icon(
                   CupertinoIcons.money_dollar_circle,
                   size: 25.0,
                 ),
-                title: Text('KAKAO API'),
+                title: Transform.translate(
+                  offset: Offset(-16, 0),
+                  child: Text('카카오페이로 결제'),
+                ),
                 onTap: () {
-                  // kakao 넣는 페이지!!!!
-                  ///Feature coming soon
-                //  Navigator.pop(context);
-              Navigator.of(context)
+                  Navigator.of(context)
                       .push(CupertinoPageRoute(builder: (_) => KakaoAPI()));
                 },
               ),
@@ -88,29 +99,15 @@ class FabContainer extends StatelessWidget {
                   CupertinoIcons.qrcode_viewfinder,
                   size: 25.0,
                 ),
-                title: Text('QR scanner'),
+                title: Transform.translate(
+                  offset: Offset(-16, 0),
+                  child: Text('QR 코드 스캔'),
+                ),
                 onTap: () {
-                  //QR넣는 페이지!!!!!
-                 // Navigator.pop(context);
-
-                Navigator.of(context)
-                      .push(CupertinoPageRoute(builder: (_) => QrcodeScanner()));
+                  Navigator.of(context).push(
+                      CupertinoPageRoute(builder: (_) => QrcodeScanner()));
                 },
               ),
-             /* ListTile(
-                leading: Icon(
-                  CupertinoIcons.camera_on_rectangle,
-                  size: 25.0,
-                ),
-                title: Text('Make a post'),
-                onTap: () {
-                 // QR넣는 페이지!!!!!
-                  Navigator.pop(context);
-
-                  Navigator.of(context)
-                      .push(CupertinoPageRoute(builder: (_) => CreatePost()));
-                },
-              ),*/
             ],
           ),
         );

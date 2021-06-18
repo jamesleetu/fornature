@@ -37,8 +37,8 @@ class CommentsStreamWrapper extends StatelessWidget {
               ? Container(
                   child: Center(
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 20.0),
-                      child: Text('No comments'),
+                      padding: EdgeInsets.only(top: 30.0),
+                      child: Text('아직 댓글이 없습니다'),
                     ),
                   ),
                 )

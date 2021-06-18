@@ -24,26 +24,25 @@ class _ProfilePictureState extends State<ProfilePicture> {
         progressIndicator: circularProgress(context),
         inAsyncCall: viewModel.loading,
         child: Scaffold(
+          backgroundColor: Colors.white,
           key: viewModel.scaffoldKey,
           appBar: AppBar(
-            title: Text('Add a profile picture'),
+            backgroundColor: Colors.white,
+            title: Text('프로필 등록'),
             centerTitle: true,
           ),
           body: ListView(
-            padding: EdgeInsets.symmetric(horizontal: 30.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 50.0, vertical: 50.0),
             children: [
               InkWell(
                 onTap: () => showImageChoices(context, viewModel),
                 child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.width - 30,
+                  height: MediaQuery.of(context).size.width - 110,
                   decoration: BoxDecoration(
                     color: Colors.grey[300],
                     borderRadius: BorderRadius.all(
-                      Radius.circular(3.0),
-                    ),
-                    border: Border.all(
-                      color: Theme.of(context).accentColor,
+                      Radius.circular(10.0),
                     ),
                   ),
                   child: viewModel.imgLink != null
@@ -54,13 +53,17 @@ class _ProfilePictureState extends State<ProfilePicture> {
                           fit: BoxFit.cover,
                         )
                       : viewModel.mediaUrl == null
-                          ? Center(
-                              child: Text(
-                                'upload your profile picture',
-                                style: TextStyle(
-                                  color: Theme.of(context).accentColor,
+                          ? Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.camera_alt,
+                                  size: 50.0,
                                 ),
-                              ),
+                                Text(
+                                  '프로필 사진을 등록하세요',
+                                ),
+                              ],
                             )
                           : Image.file(
                               viewModel.mediaUrl,
@@ -73,12 +76,17 @@ class _ProfilePictureState extends State<ProfilePicture> {
               SizedBox(height: 10.0),
               Center(
                 child: RaisedButton(
-                  color: Theme.of(context).accentColor,
+                  color: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5.0),
                   ),
                   child: Center(
-                    child: Text('done'.toUpperCase()),
+                    child: Text(
+                      '저장',
+                      style: TextStyle(
+                        fontSize: 15.0,
+                      ),
+                    ),
                   ),
                   onPressed: () => viewModel.uploadProfilePicture(context),
                 ),
@@ -94,40 +102,51 @@ class _ProfilePictureState extends State<ProfilePicture> {
     showModalBottomSheet(
       context: context,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(10.0))),
       builder: (BuildContext context) {
         return FractionallySizedBox(
-          heightFactor: .6,
+          heightFactor: .45,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 20.0),
+              SizedBox(height: 16.0),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                padding: EdgeInsets.only(left: 20.0, bottom: 8.0),
                 child: Text(
-                  'Select'.toUpperCase(),
+                  '선택하기',
                   style: TextStyle(
+                    fontSize: 16.0,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
               Divider(),
               ListTile(
-                leading: Icon(Feather.camera),
-                title: Text('Camera'),
+                leading: Icon(
+                  Feather.camera,
+                  size: 25.0,
+                ),
+                title: Transform.translate(
+                  offset: Offset(-16, 0),
+                  child: Text('사진 찍기'),
+                ),
                 onTap: () {
                   Navigator.pop(context);
                   viewModel.pickImage(camera: true);
                 },
               ),
               ListTile(
-                leading: Icon(Feather.image),
-                title: Text('Gallery'),
+                leading: Icon(
+                  Feather.image,
+                  size: 25.0,
+                ),
+                title: Transform.translate(
+                  offset: Offset(-16, 0),
+                  child: Text('사진 보관함'),
+                ),
                 onTap: () {
                   Navigator.pop(context);
                   viewModel.pickImage();
-                  // viewModel.pickProfilePicture();
                 },
               ),
             ],

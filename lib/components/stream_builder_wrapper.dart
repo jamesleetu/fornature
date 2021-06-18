@@ -31,17 +31,12 @@ class StreamBuilderWrapper extends StatelessWidget {
       stream: stream,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          // var list = snapshot.data.documents.toList();
           var list = snapshot.data.docs.toList();
           return list.length == 0
               ? Padding(
                   padding: const EdgeInsets.only(top: 100.0),
-                  child: Container(
-                    height: 60.0,
-                    width: 100.0,
-                    child: Center(
-                      child: Text('No Posts'),
-                    ),
+                  child: Center(
+                    child: Text('게시물 없음'),
                   ),
                 )
               : ListView.builder(

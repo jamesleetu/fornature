@@ -33,22 +33,22 @@ class _EditProfileState extends State<EditProfile> {
       progressIndicator: circularProgress(context),
       inAsyncCall: viewModel.loading,
       child: Scaffold(
+        backgroundColor: Colors.white,
         key: viewModel.scaffoldKey,
         appBar: AppBar(
+          backgroundColor: Colors.white,
           centerTitle: true,
-          title: Text("Edit Profile"),
+          title: Text("프로필 편집"),
           actions: [
             Center(
               child: Padding(
-                padding: const EdgeInsets.only(right: 25.0),
+                padding: const EdgeInsets.all(17.0),
                 child: GestureDetector(
                   onTap: () => viewModel.editProfile(context),
                   child: Text(
-                    'SAVE',
+                    '저장',
                     style: TextStyle(
-                      fontWeight: FontWeight.w900,
                       fontSize: 15.0,
-                      color: Theme.of(context).accentColor,
                     ),
                   ),
                 ),
@@ -56,57 +56,60 @@ class _EditProfileState extends State<EditProfile> {
             ),
           ],
         ),
-        body: ListView(
-          children: [
-            Center(
-              child: GestureDetector(
-                onTap: () => viewModel.pickImage(),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: Colors.transparent,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.3),
-                        offset: new Offset(0.0, 0.0),
-                        blurRadius: 2.0,
-                        spreadRadius: 0.0,
+        body: Padding(
+          padding: const EdgeInsets.only(top: 20.0),
+          child: ListView(
+            children: [
+              Center(
+                child: GestureDetector(
+                  onTap: () => viewModel.pickImage(),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Colors.transparent,
                       ),
-                    ],
-                  ),
-                  child: viewModel.imgLink != null
-                      ? Padding(
-                          padding: const EdgeInsets.all(1.0),
-                          child: CircleAvatar(
-                            radius: 65.0,
-                            backgroundImage: NetworkImage(viewModel.imgLink),
-                          ),
-                        )
-                      : viewModel.image == null
-                          ? Padding(
-                              padding: const EdgeInsets.all(1.0),
-                              child: CircleAvatar(
-                                radius: 65.0,
-                                backgroundImage:
-                                    NetworkImage(widget.user.photoUrl),
-                              ),
-                            )
-                          : Padding(
-                              padding: const EdgeInsets.all(1.0),
-                              child: CircleAvatar(
-                                radius: 65.0,
-                                backgroundImage: FileImage(viewModel.image),
-                              ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.3),
+                          offset: new Offset(0.0, 0.0),
+                          blurRadius: 2.0,
+                          spreadRadius: 0.0,
+                        ),
+                      ],
+                    ),
+                    child: viewModel.imgLink != null
+                        ? Padding(
+                            padding: const EdgeInsets.all(1.0),
+                            child: CircleAvatar(
+                              radius: 65.0,
+                              backgroundImage: NetworkImage(viewModel.imgLink),
                             ),
+                          )
+                        : viewModel.image == null
+                            ? Padding(
+                                padding: const EdgeInsets.all(1.0),
+                                child: CircleAvatar(
+                                  radius: 65.0,
+                                  backgroundImage:
+                                      NetworkImage(widget.user.photoUrl),
+                                ),
+                              )
+                            : Padding(
+                                padding: const EdgeInsets.all(1.0),
+                                child: CircleAvatar(
+                                  radius: 65.0,
+                                  backgroundImage: FileImage(viewModel.image),
+                                ),
+                              ),
+                  ),
                 ),
               ),
-            ),
-            SizedBox(height: 10.0),
-            buildForm(viewModel, context)
-          ],
+              SizedBox(height: 20.0),
+              buildForm(viewModel, context)
+            ],
+          ),
         ),
       ),
     );
@@ -126,7 +129,7 @@ class _EditProfileState extends State<EditProfile> {
               enabled: !viewModel.loading,
               initialValue: widget.user.username,
               prefix: Feather.user,
-              hintText: "Username",
+              hintText: "닉네임",
               textInputAction: TextInputAction.next,
               validateFunction: Validations.validateName,
               onSaved: (String val) {
@@ -135,35 +138,16 @@ class _EditProfileState extends State<EditProfile> {
             ),
             SizedBox(height: 10.0),
             TextFormBuilder(
-              initialValue: widget.user.country,
               enabled: !viewModel.loading,
-              prefix: Feather.map_pin,
-              hintText: "Country",
-              textInputAction: TextInputAction.next,
-              validateFunction: Validations.validateName,
-              onSaved: (String val) {
-                viewModel.setCountry(val);
-              },
-            ),
-            SizedBox(height: 10.0),
-            Text(
-              "Bio",
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            TextFormField(
-              maxLines: null,
               initialValue: widget.user.bio,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              validator: (String value) {
-                if (value.length > 1000) {
-                  return 'Bio must be short';
-                }
-                return null;
-              },
+              prefix: CupertinoIcons.t_bubble,
+              hintText: "소개",
+              textInputAction: TextInputAction.done,
+              validateFunction: Validations.validateBio,
               onSaved: (String val) {
                 viewModel.setBio(val);
               },
-              onChanged: (String val) {
+              onChange: (String val) {
                 viewModel.setBio(val);
               },
             ),

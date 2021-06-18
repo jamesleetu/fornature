@@ -4,10 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fornature/components/stream_builder_wrapper.dart';
 import 'package:fornature/models/post.dart';
+import 'package:fornature/pages/notification.dart';
 import 'package:fornature/utils/firebase.dart';
 import 'package:fornature/widgets/userpost.dart';
-
-import '../posts/create_post.dart';
 
 class Timeline extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
@@ -15,57 +14,33 @@ class Timeline extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       key: scaffoldKey,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
         title: Text(
-          '초행길 커뮤니티',
-          style: TextStyle(fontWeight: FontWeight.w900),
+          '초행길',
         ),
         centerTitle: true,
-          actions: [
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: GestureDetector(
-              onTap: () {
-              //  Navigator.pop(context);
+        actions: [
+          // notifications
+          Container(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 4.0, right: 20.0),
+              child: GestureDetector(
+                onTap: () {
                   Navigator.of(context)
-                      .push(CupertinoPageRoute(builder: (_) => CreatePost()));
-              } ,
-             /*Text(
-                'Make a Post',
-                style: TextStyle(
-                  fontSize: 13.0,
-                  fontWeight: FontWeight.w900,
-                  color: Theme.of(context).accentColor,
+                      .push(CupertinoPageRoute(builder: (_) => Activities()));
+                },
+                child: Icon(
+                  CupertinoIcons.bell,
+                  size: 22.0,
                 ),
-              ),*/
-              child: Icon(
-                  CupertinoIcons.camera_on_rectangle,
-                  size: 25.0,
-                
-                //'icon',
-                //style: TextStyle(
-                //  fontSize: 13.0,
-                 // fontWeight: FontWeight.w900,
-                 // color: Theme.of(context).accentColor,
-                //),
-
               ),
             ),
           ),
         ],
-        /* actions: [
-          IconButton(
-            icon: Icon(CupertinoIcons.chat_bubble_2_fill,
-                size: 30.0, color: Theme.of(context).accentColor),
-            onPressed: () {
-              // Navigator.push(
-              //    context, CupertinoPageRoute(builder: (_) => Chats()));
-            },
-          ),
-          SizedBox(width: 20.0),
-        ],*/
       ),
       body: ListView(
         shrinkWrap: true,
@@ -80,7 +55,6 @@ class Timeline extends StatelessWidget {
               PostModel posts = PostModel.fromJson(snapshot.data());
               return Padding(
                 padding: const EdgeInsets.only(bottom: 12.0),
-                //  child: Posts(post: posts),
                 child: UserPost(post: posts),
               );
             },

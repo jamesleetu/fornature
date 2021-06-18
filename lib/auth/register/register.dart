@@ -23,26 +23,42 @@ class _RegisterState extends State<Register> {
       progressIndicator: circularProgress(context),
       inAsyncCall: viewModel.loading,
       child: Scaffold(
+        backgroundColor: Colors.white,
         key: viewModel.scaffoldKey,
         body: ListView(
-          padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 40.0),
+          padding: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width / 25,
+              vertical: MediaQuery.of(context).size.height / 5),
           children: [
-            SizedBox(height:10.0),
-            Text(
-              'Welcome to Wooble Social App..\nCreate a new account and connect with friends',
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18.0,
-                  fontFamily: 'Roboto-Regular'),
+            Center(
+              child: Text(
+                '초행길에 오신 걸 환영합니다!',
+                style: TextStyle(
+                  fontSize: 23.0,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+            ),
+            SizedBox(height: 5.0),
+            Center(
+              child: Text(
+                '제로 웨이스트 라이프 스타일을 시작해볼까요?',
+                style: TextStyle(
+                  fontSize: 15.0,
+                ),
+              ),
             ),
             SizedBox(height: 30.0),
             buildForm(viewModel, context),
-            SizedBox(height: 30.0),
+            SizedBox(height: 10.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Already have an account  ',
+                  '이미 계정이 있으신가요?  ',
+                  style: TextStyle(
+                    fontSize: 15.0,
+                  ),
                 ),
                 GestureDetector(
                   onTap: () {
@@ -50,10 +66,10 @@ class _RegisterState extends State<Register> {
                         .push(CupertinoPageRoute(builder: (_) => Login()));
                   },
                   child: Text(
-                    'Login',
+                    '로그인',
                     style: TextStyle(
+                      fontSize: 15.0,
                       fontWeight: FontWeight.bold,
-                      color: Theme.of(context).accentColor,
                     ),
                   ),
                 ),
@@ -74,7 +90,7 @@ class _RegisterState extends State<Register> {
           TextFormBuilder(
             enabled: !viewModel.loading,
             prefix: Feather.user,
-            hintText: "Username",
+            hintText: "닉네임",
             textInputAction: TextInputAction.next,
             validateFunction: Validations.validateName,
             onSaved: (String val) {
@@ -83,38 +99,38 @@ class _RegisterState extends State<Register> {
             focusNode: viewModel.usernameFN,
             nextFocusNode: viewModel.emailFN,
           ),
-          SizedBox(height: 20.0),
+          SizedBox(height: 10.0),
           TextFormBuilder(
             enabled: !viewModel.loading,
             prefix: Feather.mail,
-            hintText: "Email",
+            hintText: "이메일",
             textInputAction: TextInputAction.next,
             validateFunction: Validations.validateEmail,
             onSaved: (String val) {
               viewModel.setEmail(val);
             },
             focusNode: viewModel.emailFN,
-            nextFocusNode: viewModel.countryFN,
+            nextFocusNode: viewModel.bioFN,
           ),
-          SizedBox(height: 20.0),
+          SizedBox(height: 10.0),
           TextFormBuilder(
             enabled: !viewModel.loading,
-            prefix: Feather.map_pin,
-            hintText: "Country",
+            prefix: CupertinoIcons.t_bubble,
+            hintText: "소개",
             textInputAction: TextInputAction.next,
-            validateFunction: Validations.validateName,
+            validateFunction: Validations.validateBio,
             onSaved: (String val) {
-              viewModel.setCountry(val);
+              viewModel.setBio(val);
             },
-            focusNode: viewModel.countryFN,
+            focusNode: viewModel.bioFN,
             nextFocusNode: viewModel.passFN,
           ),
-          SizedBox(height: 20.0),
+          SizedBox(height: 10.0),
           PasswordFormBuilder(
             enabled: !viewModel.loading,
             prefix: Feather.lock,
             suffix: Feather.eye,
-            hintText: "Password",
+            hintText: "비밀번호",
             textInputAction: TextInputAction.next,
             validateFunction: Validations.validatePassword,
             obscureText: true,
@@ -124,11 +140,11 @@ class _RegisterState extends State<Register> {
             focusNode: viewModel.passFN,
             nextFocusNode: viewModel.cPassFN,
           ),
-          SizedBox(height: 20.0),
+          SizedBox(height: 10.0),
           PasswordFormBuilder(
             enabled: !viewModel.loading,
             prefix: Feather.lock,
-            hintText: "Confirm Password",
+            hintText: "비밀번호 확인",
             textInputAction: TextInputAction.done,
             validateFunction: Validations.validatePassword,
             submitAction: () => viewModel.register(context),
@@ -138,21 +154,21 @@ class _RegisterState extends State<Register> {
             },
             focusNode: viewModel.cPassFN,
           ),
-          SizedBox(height: 25.0),
+          SizedBox(height: 15.0),
           Container(
-            height: 45.0,
+            height: 35.0,
             width: 180.0,
             child: RaisedButton(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(40.0),
               ),
-              color: Theme.of(context).accentColor,
+              color: Colors.white,
               child: Text(
-                'sign up'.toUpperCase(),
+                '가입하기',
                 style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 12.0,
-                  fontWeight: FontWeight.w600,
+                  fontSize: 15.0,
+                  fontWeight: FontWeight.w900,
+                  color: Colors.black,
                 ),
               ),
               onPressed: () => viewModel.register(context),

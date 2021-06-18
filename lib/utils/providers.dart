@@ -7,8 +7,6 @@ import 'package:fornature/view_models/profile/edit_profile_view_model.dart';
 import 'package:fornature/view_models/user/user_view_model.dart';
 import 'package:fornature/utils/constants.dart';
 
-
-
 List<SingleChildWidget> providers = [
   ChangeNotifierProvider(create: (_) => RegisterViewModel()),
   ChangeNotifierProvider(create: (_) => LoginViewModel()),
