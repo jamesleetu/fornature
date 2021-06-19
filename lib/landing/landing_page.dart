@@ -55,13 +55,13 @@ class _LandingState extends State<Landing> {
               },
               // 로그인 버튼
               child: Container(
-                height: 80.0,
+                height: 60.0,
                 width: 180.0,
                 child: Center(
                   child: Text(
                     '로그인',
                     style: TextStyle(
-                      fontSize: 20.0,
+                      fontSize: 16.0,
                       color: Colors.black,
                     ),
                   ),
@@ -75,13 +75,13 @@ class _LandingState extends State<Landing> {
               },
               // 회원가입 버튼
               child: Container(
-                height: 80.0,
+                height: 60.0,
                 width: 180.0,
                 child: Center(
                   child: Text(
                     '회원가입',
                     style: TextStyle(
-                      fontSize: 20.0,
+                      fontSize: 16.0,
                       color: Colors.black,
                     ),
                   ),

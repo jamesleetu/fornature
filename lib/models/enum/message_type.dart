@@ -1,6 +1,0 @@
-/*
-enum MessageType {
-  TEXT,
-  IMAGE,
-}
-*/

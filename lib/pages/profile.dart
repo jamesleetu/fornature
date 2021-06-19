@@ -6,6 +6,7 @@ import 'package:fornature/auth/register/register.dart';
 import 'package:fornature/components/stream_grid_wrapper.dart';
 import 'package:fornature/models/post.dart';
 import 'package:fornature/models/user.dart';
+import 'package:fornature/posts/create_post.dart';
 import 'package:fornature/screens/edit_profile.dart';
 import 'package:fornature/utils/firebase.dart';
 import 'package:fornature/widgets/post_tiles.dart';
@@ -55,8 +56,15 @@ class _ProfileState extends State<Profile> {
   }
 
   checkIfVisited() async {
-    DocumentSnapshot doc = await visithistoryRef.doc(widget.profileId).get();
+    DocumentSnapshot doc = await visithistoryRef
+        .doc(widget.profileId)
+        .collection('visithistory')
+        .doc(widget.profileId)
+        .get();
     setState(() {
+      if (doc.exists) {
+        visitCount = doc.get('Count');
+      }
       isVisited = doc.exists;
     });
   }
@@ -71,20 +79,18 @@ class _ProfileState extends State<Profile> {
         title: Text('프로필'),
         actions: [
           widget.profileId == firebaseAuth.currentUser.uid
-              ? Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(17.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        firebaseAuth.signOut();
-                        Navigator.of(context).push(
-                            CupertinoPageRoute(builder: (_) => Register()));
-                      },
-                      child: Text(
-                        '로그아웃',
-                        style: TextStyle(
-                          fontSize: 13.0,
-                        ),
+              ? Padding(
+                  padding: const EdgeInsets.all(17.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      firebaseAuth.signOut();
+                      Navigator.of(context)
+                          .push(CupertinoPageRoute(builder: (_) => Register()));
+                    },
+                    child: Text(
+                      '로그아웃',
+                      style: TextStyle(
+                        fontSize: 13.0,
                       ),
                     ),
                   ),
@@ -134,12 +140,21 @@ class _ProfileState extends State<Profile> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          user?.username,
-                                          style: TextStyle(
-                                              fontSize: 22.0,
-                                              fontWeight: FontWeight.w900),
-                                          maxLines: null,
+                                        Row(
+                                          children: [
+                                            Text(
+                                              user?.username,
+                                              style: TextStyle(
+                                                  fontSize: 22.0,
+                                                  fontWeight: FontWeight.w900),
+                                              maxLines: null,
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: buildPostButton(user),
+                                            ),
+                                          ],
                                         ),
                                         SizedBox(height: 5.0),
                                         /* bio */
@@ -264,23 +279,7 @@ class _ProfileState extends State<Profile> {
                                 ),
                                 Container(
                                   width: 50.0,
-                                  child: StreamBuilder(
-                                    stream: visithistoryRef
-                                        .doc(widget.profileId)
-                                        .collection('visithistory')
-                                        .snapshots(),
-                                    builder: (context,
-                                        AsyncSnapshot<QuerySnapshot> snapshot) {
-                                      if (snapshot.hasData) {
-                                        QuerySnapshot snap = snapshot.data;
-                                        List<DocumentSnapshot> docs = snap.docs;
-                                        return buildCount(
-                                            "방문기록", docs?.length ?? 0);
-                                      } else {
-                                        return buildCount("방문기록", 0);
-                                      }
-                                    },
-                                  ),
+                                  child: buildCount("방문기록", visitCount),
                                 ),
                               ],
                             ),
@@ -346,6 +345,23 @@ class _ProfileState extends State<Profile> {
         )
       ],
     );
+  }
+
+  buildPostButton(user) {
+    //if isMe then display "add post"
+    bool isMe = widget.profileId == firebaseAuth.currentUser.uid;
+    if (isMe) {
+      return GestureDetector(
+        onTap: () {
+          Navigator.of(context)
+              .push(CupertinoPageRoute(builder: (_) => CreatePost()));
+        },
+        child: Icon(
+          CupertinoIcons.plus_circle,
+          size: 22.0,
+        ),
+      );
+    }
   }
 
   buildProfileButton(user) {

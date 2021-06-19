@@ -90,7 +90,7 @@ class _BaseMapPageState extends State<BaseMapPage> {
     getShops();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       OverlayImage.fromAssetImage(
-        assetName: 'ss/map-marker-icon.png',
+        assetName: 'assets/images/map/map-marker-icon.png',
         context: context,
       ).then((image) {
         Marker(
