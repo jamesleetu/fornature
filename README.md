@@ -91,4 +91,4 @@ dependencies:
   ```
   
   ## More
-  You can check more information about project through [2021 Capstone Design 1 Wiki](http://cscp2.sogang.ac.kr/CSE4186/index.php/%EC%A0%9C%EB%A1%9C%EC%9B%A8%EC%9D%B4%EC%8A%A4%ED%8A%B8%EC%83%B5_%EB%A7%A4%ED%95%91_%EC%95%B1)
+  You can check more information and screenshot about project through [2021 Capstone Design 1 Wiki](http://cscp2.sogang.ac.kr/CSE4186/index.php/%EC%A0%9C%EB%A1%9C%EC%9B%A8%EC%9D%B4%EC%8A%A4%ED%8A%B8%EC%83%B5_%EB%A7%A4%ED%95%91_%EC%95%B1)
