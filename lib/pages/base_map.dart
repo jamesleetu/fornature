@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +10,6 @@ import 'package:naver_map_plugin/naver_map_plugin.dart';
 import 'package:fornature/themes/light_color.dart';
 import 'package:fornature/themes/theme.dart';
 import 'package:fornature/widgets/title_text.dart';
-import 'package:fornature/widgets/extentions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:fornature/utils/firebase.dart';
@@ -36,19 +34,22 @@ class _BaseMapPageState extends State<BaseMapPage> {
   List<Marker> _markers = [];
   bool detail = false;
   var cat = 0;
-  //List<int> _categor = [0, 1, 2, 3, 4];
+
+  /* variables for selected shop */
   List<int> _categor = [0, 1, 2, 3];
   List<String> _catstr = ["", "소분", "공방", "리필", "카페"];
-  String phone;
-  String time;
   List<String> tmpcat;
   List<bool> tmpcatbool = [false, false, false, false];
-  //variables for selected shop
+
+  /* detail info */
+  String address;
+  String time;
+  String homepage;
+  String phone;
 
   double _value = 20000.0;
   String _label = '';
   TextEditingController searchController = TextEditingController();
-  ////////////////////////////////search variables
 
   bool loading = true;
   bool searchflag = false;
@@ -65,22 +66,6 @@ class _BaseMapPageState extends State<BaseMapPage> {
     });
   }
 
-/*
-  search(String query) {
-    if (query == "") {
-      filteredshops = shops;
-    } else {
-      List shopSearch = shops.where((shopSnap) {
-        String shopName = shopSnap.id;
-        return shopName.toLowerCase().contains(query.toLowerCase());
-      }).toList();
-
-      setState(() {
-        filteredshops = shopSearch;
-      });
-    }
-  }
-*/
   removeFromList(index) {
     filteredshops.removeAt(index);
   }
@@ -105,18 +90,16 @@ class _BaseMapPageState extends State<BaseMapPage> {
             captionMinZoom: 10,
             width: 35,
             height: 35,
-            //infoWindow: '인포 윈도우',
             onMarkerTab: _onMarkerTap);
         setState(() {});
       });
     });
+
     getPosition();
+
     FirebaseFirestore.instance.collection('shops').get().then((value) {
       if (value.docs.isNotEmpty) {
         for (int i = 0; i < value.docs.length; i++) {
-          print(value.docs[i].id);
-          print('위치 : ${value.docs[i].data()['location'].latitude},'
-              '${value.docs[i].data()['location'].longitude}');
           _markers.add(Marker(
               markerId: _markers.length.toString(),
               position: LatLng(value.docs[i].data()['location'].latitude,
@@ -140,8 +123,6 @@ class _BaseMapPageState extends State<BaseMapPage> {
     try {
       setState(() {
         _currentPosition = position;
-        print('현재위치 : ${_currentPosition.latitude},'
-            '${_currentPosition.longitude}');
         for (int i = 0; i < _markers.length; i++) {
           if (Geolocator.distanceBetween(
                   _currentPosition.latitude,
@@ -182,16 +163,10 @@ class _BaseMapPageState extends State<BaseMapPage> {
             locationButtonEnable: true,
             indoorEnable: true,
             onCameraChange: _onCameraChange,
-            onCameraIdle: _onCameraIdle,
             onMapTap: _onMapTap,
-            onMapLongTap: _onMapLongTap,
-            onMapDoubleTap: _onMapDoubleTap,
-            onMapTwoFingerTap: _onMapTwoFingerTap,
-            onSymbolTap: _onSymbolTap,
             markers: _markers,
             nightModeEnable: true,
           ),
-          //if (searched == true) searchFunc(),
           if (detail == true) _detailWidget(),
           Padding(
             padding: EdgeInsets.all(30),
@@ -213,7 +188,6 @@ class _BaseMapPageState extends State<BaseMapPage> {
           height: 40.0,
           width: MediaQuery.of(context).size.width - 80,
           decoration: BoxDecoration(
-              // color: Colors.white,
               borderRadius: BorderRadius.circular(20.0),
               border: Border.all(
                 color: Colors.black26,
@@ -228,9 +202,6 @@ class _BaseMapPageState extends State<BaseMapPage> {
                 LengthLimitingTextInputFormatter(20),
               ],
               textCapitalization: TextCapitalization.sentences,
-              // onChanged: (query) {
-              //   //search(query);
-              // },
               onTap: () {
                 FocusManager.instance.primaryFocus.unfocus();
                 showSearch(
@@ -256,7 +227,6 @@ class _BaseMapPageState extends State<BaseMapPage> {
             ),
           ),
         ),
-        // Spacer(),
         Padding(
           padding: const EdgeInsets.only(left: 20.0),
           child: GestureDetector(
@@ -315,9 +285,6 @@ class _BaseMapPageState extends State<BaseMapPage> {
       FirebaseFirestore.instance.collection('shops').get().then((value) {
         if (value.docs.isNotEmpty) {
           for (int i = 0; i < value.docs.length; i++) {
-            print(value.docs[i]);
-            print('위치 : ${value.docs[i].data()['location'].latitude},'
-                '${value.docs[i].data()['location'].longitude}');
             if (Geolocator.distanceBetween(
                     _currentPosition.latitude,
                     _currentPosition.longitude,
@@ -328,7 +295,6 @@ class _BaseMapPageState extends State<BaseMapPage> {
                   markerId: _markers.length.toString(),
                   position: LatLng(value.docs[i].data()['location'].latitude,
                       value.docs[i].data()['location'].longitude),
-                  //infoWindow: '인포 윈도우',
                   width: 25,
                   height: 35,
                   captionText: value.docs[i].id,
@@ -348,9 +314,6 @@ class _BaseMapPageState extends State<BaseMapPage> {
           .then((value) {
             if (value.docs.isNotEmpty) {
               for (int i = 0; i < value.docs.length; i++) {
-                print(value.docs[i]);
-                print('위치 : ${value.docs[i].data()['location'].latitude},'
-                    '${value.docs[i].data()['location'].longitude}');
                 if (Geolocator.distanceBetween(
                         _currentPosition.latitude,
                         _currentPosition.longitude,
@@ -381,9 +344,6 @@ class _BaseMapPageState extends State<BaseMapPage> {
           .then((value) {
             if (value.docs.isNotEmpty) {
               for (int i = 0; i < value.docs.length; i++) {
-                print(value.docs[i]);
-                print('위치 : ${value.docs[i].data()['location'].latitude},'
-                    '${value.docs[i].data()['location'].longitude}');
                 if (Geolocator.distanceBetween(
                         _currentPosition.latitude,
                         _currentPosition.longitude,
@@ -413,9 +373,6 @@ class _BaseMapPageState extends State<BaseMapPage> {
           .then((value) {
         if (value.docs.isNotEmpty) {
           for (int i = 0; i < value.docs.length; i++) {
-            print(value.docs[i]);
-            print('위치 : ${value.docs[i].data()['location'].latitude},'
-                '${value.docs[i].data()['location'].longitude}');
             if (Geolocator.distanceBetween(
                     _currentPosition.latitude,
                     _currentPosition.longitude,
@@ -440,44 +397,9 @@ class _BaseMapPageState extends State<BaseMapPage> {
   }
 
   _onMapTap(LatLng position) async {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content:
-          Text('[onTap] lat: ${position.latitude}, lon: ${position.longitude}'),
-      duration: Duration(milliseconds: 500),
-      backgroundColor: Colors.black,
-    ));
     setState(() {
       detail = false;
     });
-  }
-
-  _onMapLongTap(LatLng position) {}
-
-  _onMapDoubleTap(LatLng position) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(
-          '[onDoubleTap] lat: ${position.latitude}, lon: ${position.longitude}'),
-      duration: Duration(milliseconds: 500),
-      backgroundColor: Colors.black,
-    ));
-  }
-
-  _onMapTwoFingerTap(LatLng position) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(
-          '[onTwoFingerTap] lat: ${position.latitude}, lon: ${position.longitude}'),
-      duration: Duration(milliseconds: 500),
-      backgroundColor: Colors.black,
-    ));
-  }
-
-  _onSymbolTap(LatLng position, String caption) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(
-          '[onSymbolTap] caption: $caption, lat: ${position.latitude}, lon: ${position.longitude}'),
-      duration: Duration(milliseconds: 500),
-      backgroundColor: Colors.black,
-    ));
   }
 
   _mapTypeSelector() {
@@ -500,9 +422,6 @@ class _BaseMapPageState extends State<BaseMapPage> {
             case 2:
               title = '공방';
               break;
-            //case 3:
-            //  title = '리필';
-            //  break;
             case 3:
               title = '카페';
               break;
@@ -541,7 +460,6 @@ class _BaseMapPageState extends State<BaseMapPage> {
   void _onTapTypeSelector(int type) async {
     if (cat != type) {
       cat = type;
-      print('type is $type');
       setState(() {
         _markers.clear();
       });
@@ -549,9 +467,6 @@ class _BaseMapPageState extends State<BaseMapPage> {
         FirebaseFirestore.instance.collection('shops').get().then((value) {
           if (value.docs.isNotEmpty) {
             for (int i = 0; i < value.docs.length; i++) {
-              print(value.docs[i]);
-              print('위치 : ${value.docs[i].data()['location'].latitude},'
-                  '${value.docs[i].data()['location'].longitude}');
               if (Geolocator.distanceBetween(
                       _currentPosition.latitude,
                       _currentPosition.longitude,
@@ -562,7 +477,6 @@ class _BaseMapPageState extends State<BaseMapPage> {
                     markerId: _markers.length.toString(),
                     position: LatLng(value.docs[i].data()['location'].latitude,
                         value.docs[i].data()['location'].longitude),
-                    //infoWindow: '인포 윈도우',
                     width: 25,
                     height: 35,
                     captionText: value.docs[i].id,
@@ -581,9 +495,6 @@ class _BaseMapPageState extends State<BaseMapPage> {
             .then((value) {
               if (value.docs.isNotEmpty) {
                 for (int i = 0; i < value.docs.length; i++) {
-                  print(value.docs[i]);
-                  print('위치 : ${value.docs[i].data()['location'].latitude},'
-                      '${value.docs[i].data()['location'].longitude}');
                   if (Geolocator.distanceBetween(
                           _currentPosition.latitude,
                           _currentPosition.longitude,
@@ -614,9 +525,6 @@ class _BaseMapPageState extends State<BaseMapPage> {
             .then((value) {
               if (value.docs.isNotEmpty) {
                 for (int i = 0; i < value.docs.length; i++) {
-                  print(value.docs[i]);
-                  print('위치 : ${value.docs[i].data()['location'].latitude},'
-                      '${value.docs[i].data()['location'].longitude}');
                   if (Geolocator.distanceBetween(
                           _currentPosition.latitude,
                           _currentPosition.longitude,
@@ -646,9 +554,6 @@ class _BaseMapPageState extends State<BaseMapPage> {
             .then((value) {
           if (value.docs.isNotEmpty) {
             for (int i = 0; i < value.docs.length; i++) {
-              print(value.docs[i]);
-              print('위치 : ${value.docs[i].data()['location'].latitude},'
-                  '${value.docs[i].data()['location'].longitude}');
               if (Geolocator.distanceBetween(
                       _currentPosition.latitude,
                       _currentPosition.longitude,
@@ -659,7 +564,6 @@ class _BaseMapPageState extends State<BaseMapPage> {
                     markerId: _markers.length.toString(),
                     position: LatLng(value.docs[i].data()['location'].latitude,
                         value.docs[i].data()['location'].longitude),
-                    //infoWindow: '인포 윈도우',
                     width: 25,
                     height: 35,
                     captionText: value.docs[i].id,
@@ -679,7 +583,6 @@ class _BaseMapPageState extends State<BaseMapPage> {
     if (searched == true) {
       int pos = _markers.indexWhere((m) => m.position == LatLng(lat, long));
       if (pos == -1) {
-        print("here!");
         _markers.add(Marker(
             markerId: _markers.length.toString(),
             position: LatLng(lat, long),
@@ -688,8 +591,7 @@ class _BaseMapPageState extends State<BaseMapPage> {
             captionText: placename,
             captionMinZoom: 15,
             onMarkerTab: _onMarkerTap));
-        //});
-        //}
+
         setState(() {});
       }
       final controller = await _controller.future;
@@ -701,16 +603,8 @@ class _BaseMapPageState extends State<BaseMapPage> {
           ),
         ),
       );
-      //detail = true;
       searched = false;
     }
-    print('카메라 움직임 >>> 위치 : ${latLng.latitude}, ${latLng.longitude}'
-        '\n원인: $reason'
-        '\n에니메이션 여부: $isAnimated');
-  }
-
-  void _onCameraIdle() {
-    print('카메라 움직임 멈춤');
   }
 
   void _onMarkerTap(Marker marker, Map<String, int> iconSize) {
@@ -721,18 +615,20 @@ class _BaseMapPageState extends State<BaseMapPage> {
     documentref.get().then((doc) => {
           if (doc.exists)
             {
-              print("Open doc success!!"),
-              //tmpcat = List.from(doc.data()['category']),
-              print("${doc.data()['number']} , ${doc.data()['time']}"),
               setState(() {
                 detail = true;
                 placename = _markers[pos].captionText;
-                phone = doc.data()['phone'];
+
+                /* detail info */
+                address = doc.data()['address'];
+
                 time = doc.data()['time'];
+                homepage = doc.data()['page'];
+                phone = doc.data()['phone'];
+
                 tmpcat = List.from(doc.data()['category']);
                 lat = doc.data()['location'].latitude;
                 long = doc.data()['location'].longitude;
-                //_markers[pos].captionText = '선택됨';
                 for (int i = 0; i < tmpcatbool.length; i++) {
                   tmpcatbool[i] = false;
                 }
@@ -752,6 +648,203 @@ class _BaseMapPageState extends State<BaseMapPage> {
         });
   }
 
+  Widget _detailWidget() {
+    return DraggableScrollableSheet(
+      maxChildSize: .8,
+      initialChildSize: .53,
+      minChildSize: .53,
+      builder: (context, scrollController) {
+        return Container(
+          padding: AppTheme.padding.copyWith(bottom: 0),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30),
+                topRight: Radius.circular(30),
+              ),
+              color: Colors.white),
+          child: SingleChildScrollView(
+            controller: scrollController,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                SizedBox(height: 5),
+                Container(
+                  alignment: Alignment.center,
+                  child: Container(
+                    width: 50,
+                    height: 3,
+                    decoration: BoxDecoration(
+                        color: LightColor.iconColor,
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                  ),
+                ),
+                SizedBox(height: 10),
+                Container(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TitleText(text: placename, fontSize: 23),
+                          buildCategory(),
+                        ],
+                      ),
+                      Container(
+                        width: 68.0,
+                        child: RaisedButton(
+                          onPressed: () =>
+                              launchInBrowser(LatLng(lat, long), placename),
+                          child: Column(
+                            children: [
+                              SizedBox(height: 3.0),
+                              Icon(CupertinoIcons.location_fill),
+                              Text(
+                                '길찾기',
+                                style: TextStyle(fontSize: 12.0),
+                              ),
+                              SizedBox(height: 3.0),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 25.0),
+                buildAddress(),
+                SizedBox(height: 8.0),
+                buildTime(),
+                SizedBox(height: 8.0),
+                buildHomepage(),
+                SizedBox(height: 8.0),
+                buildNumber(),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  buildCategory() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[
+        tmpcatbool[0] == true || tmpcatbool[2] == true ? Text('리필샵') : Text(''),
+        tmpcatbool[1] == true
+            ? tmpcatbool[0] == true || tmpcatbool[2] == true
+                ? Text(', 공방')
+                : Text('공방')
+            : Text(''),
+        tmpcatbool[3] == true
+            ? tmpcatbool[1] == true
+                ? Text(', 카페')
+                : Text('카페')
+            : Text(''),
+      ],
+    );
+  }
+
+  buildAddress() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 3.0),
+          child: Icon(
+            CupertinoIcons.location,
+            color: Colors.black45,
+            size: 15.0,
+          ),
+        ),
+        SizedBox(width: 10.0),
+        Text(
+          address,
+          style: TextStyle(color: Colors.black),
+        ),
+      ],
+    );
+  }
+
+  buildTime() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 3.0),
+          child: Icon(
+            CupertinoIcons.clock,
+            color: Colors.black45,
+            size: 15.0,
+          ),
+        ),
+        SizedBox(width: 10.0),
+        Flexible(
+          child: Text(
+            time,
+            style: TextStyle(color: Colors.black),
+          ),
+        ),
+      ],
+    );
+  }
+
+  buildHomepage() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 2.0),
+          child: Icon(
+            CupertinoIcons.home,
+            color: Colors.black45,
+            size: 15.0,
+          ),
+        ),
+        SizedBox(width: 10.0),
+        GestureDetector(
+          onTap: () {
+            launchPageInBrowser(homepage);
+          },
+          child: Padding(
+            padding: const EdgeInsets.only(top: 2.0),
+            child: Text(
+              homepage,
+              style: TextStyle(color: Colors.black),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  buildNumber() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 3.0),
+          child: Icon(
+            CupertinoIcons.phone,
+            color: Colors.black45,
+            size: 15.0,
+          ),
+        ),
+        SizedBox(width: 10.0),
+        Padding(
+          padding: const EdgeInsets.only(top: 3.0),
+          child: Text(
+            phone,
+            style: TextStyle(color: Colors.black),
+          ),
+        ),
+      ],
+    );
+  }
+
   launchInBrowser(LatLng position, String placename) async {
     String url = 'https://map.kakao.com/link/to/' +
         '$placename' +
@@ -767,202 +860,11 @@ class _BaseMapPageState extends State<BaseMapPage> {
     }
   }
 
-  Widget _detailWidget() {
-    return DraggableScrollableSheet(
-      maxChildSize: .8,
-      initialChildSize: .53,
-      minChildSize: .53,
-      builder: (context, scrollController) {
-        return Container(
-          padding: AppTheme.padding.copyWith(bottom: 0),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(40),
-                topRight: Radius.circular(40),
-              ),
-              color: Colors.white),
-          child: SingleChildScrollView(
-            controller: scrollController,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                SizedBox(height: 5),
-                Container(
-                  alignment: Alignment.center,
-                  child: Container(
-                    width: 50,
-                    height: 5,
-                    decoration: BoxDecoration(
-                        color: LightColor.iconColor,
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                  ),
-                ),
-                SizedBox(height: 10),
-                Container(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      TitleText(text: placename, fontSize: 25),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: <Widget>[
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              RaisedButton(
-                                onPressed: () => launchInBrowser(
-                                    LatLng(lat, long), placename),
-                                child: Text('길 찾기'),
-                              )
-                            ],
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Icon(Icons.star,
-                                  color: LightColor.yellowColor, size: 17),
-                              Icon(Icons.star,
-                                  color: LightColor.yellowColor, size: 17),
-                              Icon(Icons.star,
-                                  color: LightColor.yellowColor, size: 17),
-                              Icon(Icons.star,
-                                  color: LightColor.yellowColor, size: 17),
-                              Icon(Icons.star_border, size: 17),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                _availableSize(),
-                SizedBox(
-                  height: 20,
-                ),
-                _availableColor(),
-                SizedBox(
-                  height: 20,
-                ),
-                _description(),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _availableSize() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        TitleText(
-          text: "분류",
-          fontSize: 14,
-        ),
-        SizedBox(height: 20),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            tmpcatbool[0] == true || tmpcatbool[2] == true
-                ? _sizeWidget("소분샵", isSelected: true)
-                : _sizeWidget("소분샵"),
-            //tmpcatbool[1] == false
-            //    ? _sizeWidget("공방")
-            //    : _sizeWidget("공방", isSelected: true),
-            tmpcatbool[1] == false
-                ? _sizeWidget("공방")
-                : _sizeWidget("공방", isSelected: true),
-            tmpcatbool[3] == false
-                ? _sizeWidget("카페")
-                : _sizeWidget("카페", isSelected: true),
-            //_sizeWidget("소분"),
-            //_sizeWidget("공방", isSelected: true),
-            //_sizeWidget("리필"),
-            //_sizeWidget("카페"),
-          ],
-        )
-      ],
-    );
-  }
-
-  Widget _sizeWidget(String text,
-      {Color color = LightColor.iconColor, bool isSelected = false}) {
-    return Container(
-      padding: EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        border: Border.all(
-            color: LightColor.iconColor,
-            style: !isSelected ? BorderStyle.solid : BorderStyle.none),
-        borderRadius: BorderRadius.all(Radius.circular(13)),
-        color:
-            isSelected ? LightColor.orange : Theme.of(context).backgroundColor,
-      ),
-      child: TitleText(
-        text: text,
-        fontSize: 16,
-        color: isSelected ? LightColor.background : LightColor.titleTextColor,
-      ),
-    ).ripple(() {}, borderRadius: BorderRadius.all(Radius.circular(13)));
-  }
-
-  Widget _availableColor() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        TitleText(
-          text: "전화번호",
-          fontSize: 14,
-        ),
-        SizedBox(height: 20),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(),
-            Text(
-              phone,
-              style:
-                  TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-            ),
-          ],
-        )
-      ],
-    );
-  }
-
-  Widget _colorWidget(Color color, {bool isSelected = false}) {
-    return CircleAvatar(
-      radius: 12,
-      backgroundColor: color.withAlpha(150),
-      child: isSelected
-          ? Icon(
-              Icons.check_circle,
-              color: color,
-              size: 18,
-            )
-          : CircleAvatar(radius: 7, backgroundColor: color),
-    );
-  }
-
-  Widget _description() {
-    print("$time");
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        TitleText(
-          text: "시간",
-          fontSize: 14,
-        ),
-        SizedBox(),
-        Text(
-          time,
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-        ),
-      ],
-    );
+  launchPageInBrowser(String homepage) async {
+    if (await canLaunch(homepage)) {
+      await launch(homepage);
+    } else {
+      throw '홈페이지를 열 수 없습니다.';
+    }
   }
 }
