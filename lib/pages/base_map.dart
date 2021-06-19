@@ -89,7 +89,7 @@ class _BaseMapPageState extends State<BaseMapPage> {
     getShops();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       OverlayImage.fromAssetImage(
-        assetName: 'ss/map-marker-icon.png',
+        assetName: 'assets/images/map/map-marker-icon.png',
         context: context,
       ).then((image) {
         Marker(
@@ -165,7 +165,7 @@ class _BaseMapPageState extends State<BaseMapPage> {
           //        value.docs[i].data()['location'].longitude) <=
           //    _value) {
           //OverlayImage.fromAssetImage(
-          //  assetName: 'ss/map-marker-icon.png',
+          //  assetName: 'assets/images/map/map-marker-icon.png',
           //  context: context,
           //).then((image) {
           _markers.add(Marker(

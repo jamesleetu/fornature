@@ -24,14 +24,12 @@ class UserService extends Service {
     var users = UserModel.fromJson(doc.data());
     users?.username = username;
     users?.bio = bio;
-    // users?.country = country;
     if (image != null) {
       users?.photoUrl = await uploadImage(profilePic, image);
     }
     await usersRef.doc(currentUid()).update({
       'username': username,
       'bio': bio,
-      // 'country': country,
       "photoUrl": users?.photoUrl ?? '',
     });
 

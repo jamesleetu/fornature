@@ -39,7 +39,7 @@ class _ManualState extends State<Manual> {
                 ),
               ),
               child: Container(
-                  height: 110.0,
+                  height: 80.0,
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                     color: Colors.grey[300],
@@ -50,12 +50,12 @@ class _ManualState extends State<Manual> {
                   child: Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(top: 32.0, bottom: 8.0),
+                        padding: const EdgeInsets.only(top: 18.0, bottom: 8.0),
                         child: Text(
                           '환경부 x 국가환경교육센터',
                           style: TextStyle(
                             fontFamily: 'StrongArmy',
-                            fontSize: 16.0,
+                            fontSize: 12.0,
                           ),
                         ),
                       ),
@@ -63,7 +63,7 @@ class _ManualState extends State<Manual> {
                         '제로웨이스트 챌린지 매뉴얼',
                         style: TextStyle(
                           fontFamily: 'StrongArmy',
-                          fontSize: 22.0,
+                          fontSize: 18.0,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -72,7 +72,7 @@ class _ManualState extends State<Manual> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 10.0),
+            padding: const EdgeInsets.only(top: 15.0),
             child: GestureDetector(
               onTap: () => Navigator.push(
                 context,
@@ -81,7 +81,7 @@ class _ManualState extends State<Manual> {
                 ),
               ),
               child: Container(
-                  height: 110.0,
+                  height: 80.0,
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                     color: Colors.grey[300],
@@ -92,12 +92,12 @@ class _ManualState extends State<Manual> {
                   child: Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(top: 32.0, bottom: 8.0),
+                        padding: const EdgeInsets.only(top: 18.0, bottom: 8.0),
                         child: Text(
                           '환경부',
                           style: TextStyle(
                             fontFamily: 'StrongArmy',
-                            fontSize: 16.0,
+                            fontSize: 12.0,
                           ),
                         ),
                       ),
@@ -105,7 +105,7 @@ class _ManualState extends State<Manual> {
                         '플라스틱 다이어트 매뉴얼',
                         style: TextStyle(
                           fontFamily: 'StrongArmy',
-                          fontSize: 22.0,
+                          fontSize: 18.0,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -114,7 +114,7 @@ class _ManualState extends State<Manual> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 10.0),
+            padding: const EdgeInsets.only(top: 15.0),
             child: GestureDetector(
               onTap: () => Navigator.push(
                 context,
@@ -123,7 +123,7 @@ class _ManualState extends State<Manual> {
                 ),
               ),
               child: Container(
-                  height: 110.0,
+                  height: 80.0,
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                     color: Colors.grey[300],
@@ -134,12 +134,12 @@ class _ManualState extends State<Manual> {
                   child: Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(top: 32.0, bottom: 8.0),
+                        padding: const EdgeInsets.only(top: 18.0, bottom: 8.0),
                         child: Text(
                           '숲과나눔 x 쓰레기덕질',
                           style: TextStyle(
                             fontFamily: 'StrongArmy',
-                            fontSize: 16.0,
+                            fontSize: 12.0,
                           ),
                         ),
                       ),
@@ -147,7 +147,7 @@ class _ManualState extends State<Manual> {
                         '컵줍깅 매뉴얼',
                         style: TextStyle(
                           fontFamily: 'StrongArmy',
-                          fontSize: 22.0,
+                          fontSize: 18.0,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -156,7 +156,7 @@ class _ManualState extends State<Manual> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 10.0, bottom: 20.0),
+            padding: const EdgeInsets.only(top: 15.0, bottom: 20.0),
             child: GestureDetector(
               onTap: () => Navigator.push(
                 context,
@@ -165,7 +165,7 @@ class _ManualState extends State<Manual> {
                 ),
               ),
               child: Container(
-                  height: 110.0,
+                  height: 80.0,
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                     color: Colors.grey[300],
@@ -176,12 +176,12 @@ class _ManualState extends State<Manual> {
                   child: Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(top: 32.0, bottom: 8.0),
+                        padding: const EdgeInsets.only(top: 18.0, bottom: 8.0),
                         child: Text(
                           '현대제철과 함께하는',
                           style: TextStyle(
                             fontFamily: 'StrongArmy',
-                            fontSize: 16.0,
+                            fontSize: 12.0,
                           ),
                         ),
                       ),
@@ -189,7 +189,7 @@ class _ManualState extends State<Manual> {
                         '#제로웨이스트챌린지',
                         style: TextStyle(
                           fontFamily: 'StrongArmy',
-                          fontSize: 22.0,
+                          fontSize: 18.0,
                           fontWeight: FontWeight.w500,
                         ),
                       ),

@@ -20,7 +20,6 @@ class _TabScreenState extends State<TabScreen> {
 
   List pages = [
     {
-      // mapping
       'title': 'Map',
       'icon': CupertinoIcons.map,
       'page': BaseMapPage(),
