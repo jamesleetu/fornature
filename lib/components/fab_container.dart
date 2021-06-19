@@ -72,7 +72,7 @@ class FabContainer extends StatelessWidget {
                 ),
                 title: Transform.translate(
                   offset: Offset(-16, 0),
-                  child: Text('카카오페이로 결제'),
+                  child: Text('카카오페이 결제'),
                 ),
                 onTap: () {
                   Navigator.of(context)

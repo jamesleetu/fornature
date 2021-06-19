@@ -29,8 +29,6 @@ class _QrcodeScannerState extends State<QrcodeScanner> {
   initState() {
     super.initState();
     checkIfvisithistory();
-
-    this._outputController = new TextEditingController();
   }
 
   checkIfvisithistory() async {
