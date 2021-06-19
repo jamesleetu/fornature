@@ -22,3 +22,5 @@
  * Notifications Feed showing recent likes / comments of your posts + new followers
  * Swipe to delete notification
  * Used Provider to manage state
+
+## Installation
