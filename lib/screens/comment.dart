@@ -157,18 +157,21 @@ class _CommentsState extends State<Comments> {
               height: 35.0,
               child: buildLikeButton(),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 4.0),
-              child: Text(
-                widget.post.description,
-                style: TextStyle(
-                  fontSize: 14.0,
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 4.0),
+                child: Text(
+                  widget.post.description,
+                  style: TextStyle(
+                    fontSize: 14.0,
+                  ),
                 ),
               ),
             ),
-            Spacer(),
+            /* 텍스트가 길면 overflow가 생기고 짧으면 시간이랑 너무 붙어서 표시됨 짧은 경우에만 Spacer 사용하도록 수정 필요 */
+            // Spacer(),
             Padding(
-              padding: const EdgeInsets.only(top: 4.0, right: 10.0),
+              padding: const EdgeInsets.only(top: 4.0, left: 4.0, right: 10.0),
               child: Text(
                   timeago.format(widget.post.timestamp.toDate(), locale: 'ko'),
                   style: TextStyle(fontSize: 9.0)),
