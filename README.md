@@ -1,4 +1,4 @@
-# 캡스톤디자인 프로젝트
+# 캡스톤디자인1 프로젝트
 
 ## Requirements
 * Any Operating System (ie. MacOS X, Linux, Windows)
