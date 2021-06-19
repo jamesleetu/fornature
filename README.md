@@ -5,6 +5,9 @@
 * Any IDE with Flutter SDK installed (ie. IntelliJ, Android Studio, VSCode etc)
 
 ## Features
+ * Made marks with Naver Map
+ * Url scheme to Kakao Map Navigator
+ * Used firebase
  * Custom photo feed 
  * Post photo posts from camera or gallery
    * Like posts
@@ -17,10 +20,28 @@
    * Change profile picture
    * Change username
    * Follow / Unfollow Users
-   * Change image view from grid layout to feed layout
-   * Add your own bio
  * Notifications Feed showing recent likes / comments of your posts + new followers
  * Swipe to delete notification
- * Used Provider to manage state
 
 ## Installation
+
+```bash
+# Prepare your Flutter environment
+# Go to https://flutter.dev/docs/get-started/install
+# After configured go ahead
+
+# Clone this repository
+$ git clone git@github.com:jamesleetu/fornature.git
+
+# Go into the repository
+$ cd fornature
+
+# Check issues
+$ flutter doctor
+
+# Get dependencies
+$ flutter packages get
+
+# Build APK
+$ flutter build apk --release
+```
