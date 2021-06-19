@@ -1,6 +1,6 @@
 # 캡스톤디자인 프로젝트
 
-## ✨ Requirements
+## Requirements
 * Any Operating System (ie. MacOS X, Linux, Windows)
 * Any IDE with Flutter SDK installed (ie. IntelliJ, Android Studio, VSCode etc)
 
