@@ -120,21 +120,7 @@ class _BaseMapPageState extends State<BaseMapPage> {
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.best,
         forceAndroidLocationManager: true);
-    try {
-      setState(() {
-        _currentPosition = position;
-        for (int i = 0; i < _markers.length; i++) {
-          if (Geolocator.distanceBetween(
-                  _currentPosition.latitude,
-                  _currentPosition.longitude,
-                  _markers[i].position.latitude,
-                  _markers[i].position.longitude) >
-              _value) {
-            _markers.removeWhere((m) => m.markerId == _markers[i].markerId);
-          }
-        }
-      });
-    } on Exception catch (e) {
+    try {} on Exception catch (e) {
       print(e);
     }
   }
