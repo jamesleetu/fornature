@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:fornature/components/stream_builder_wrapper.dart';
 import 'package:fornature/models/post.dart';
 import 'package:fornature/pages/notification.dart';
+import 'package:fornature/posts/create_post.dart';
 import 'package:fornature/utils/firebase.dart';
 import 'package:fornature/widgets/userpost.dart';
 
@@ -26,18 +27,35 @@ class Timeline extends StatelessWidget {
         actions: [
           // notifications
           Container(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 4.0, right: 20.0),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.of(context)
-                      .push(CupertinoPageRoute(builder: (_) => Activities()));
-                },
-                child: Icon(
-                  CupertinoIcons.bell,
-                  size: 22.0,
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 3.0, right: 15.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(
+                          CupertinoPageRoute(builder: (_) => Activities()));
+                    },
+                    child: Icon(
+                      CupertinoIcons.bell,
+                      size: 22.0,
+                    ),
+                  ),
                 ),
-              ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 3.0, right: 16.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(
+                          CupertinoPageRoute(builder: (_) => CreatePost()));
+                    },
+                    child: Icon(
+                      CupertinoIcons.plus_circle,
+                      size: 24.0,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],

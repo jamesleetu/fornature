@@ -6,16 +6,12 @@ class Constants {
   static String appName = "초행길";
 
   //Colors for theme
-  // static Color lightPrimary = Color(0xfff3f4f9);
   static Color lightPrimary = Color(0xfff8fff7);
   static Color darkPrimary = Color(0xff2B2B2B);
 
-  // static Color lightAccent = Color(0xff886EE4);
   static Color lightAccent = Colors.black;
   static Color darkAccent = Color(0xff886EE4);
 
-  //  static Color lightBG = Color(0xfff3f4f9);
-  // static Color lightBG = Color(0xfff8fff7);
   static Color lightBG = Color(0xffffffff);
   static Color darkBG = Color(0xff2B2B2B);
 
@@ -35,39 +31,14 @@ class Constants {
       textTheme: TextTheme(
         headline6: TextStyle(
           color: Colors.black,
-          fontSize: 18,
+          fontSize: 16,
           fontWeight: FontWeight.w700,
           fontFamily: 'Roboto-Regular',
         ),
       ),
     ),
   );
-/*
-  static ThemeData darkTheme = ThemeData(
-    fontFamily: 'Roboto-Regular',
-    brightness: Brightness.dark,
-    backgroundColor: darkBG,
-    primaryColor: darkPrimary,
-    accentColor: darkAccent,
-    scaffoldBackgroundColor: darkBG,
-    cursorColor: darkAccent,
-    bottomAppBarTheme: BottomAppBarTheme(
-      elevation: 0,
-      color: darkBG,
-    ),
-    appBarTheme: AppBarTheme(
-      elevation: 0,
-      textTheme: TextTheme(
-        headline6: TextStyle(
-          color: lightBG,
-          fontSize: 20,
-          fontWeight: FontWeight.w900,
-          fontFamily: 'Roboto-Regular',
-        ),
-      ),
-    ),
-  );
-*/
+
   static List<T> map<T>(List list, Function handler) {
     List<T> result = [];
     for (var i = 0; i < list.length; i++) {

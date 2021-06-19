@@ -25,10 +25,10 @@ class FabContainer extends StatelessWidget {
           Radius.circular(56 / 2),
         ),
       ),
-      closedColor: Theme.of(context).scaffoldBackgroundColor,
+      closedColor: Colors.white,
       closedBuilder: (BuildContext context, VoidCallback openContainer) {
         return FloatingActionButton(
-          backgroundColor: Theme.of(context).primaryColor,
+          backgroundColor: Colors.white,
           child: Icon(
             icon,
             color: Theme.of(context).accentColor,
@@ -49,7 +49,7 @@ class FabContainer extends StatelessWidget {
           borderRadius: BorderRadius.vertical(top: Radius.circular(10.0))),
       builder: (BuildContext context) {
         return FractionallySizedBox(
-          heightFactor: .60,
+          heightFactor: .50,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -65,21 +65,6 @@ class FabContainer extends StatelessWidget {
                 ),
               ),
               Divider(),
-              ListTile(
-                leading: Icon(
-                  CupertinoIcons.plus,
-                  size: 25.0,
-                ),
-                title: Transform.translate(
-                  offset: Offset(-16, 0),
-                  child: Text('새 게시물'),
-                ),
-                onTap: () {
-                  //  Navigator.pop(context);
-                  Navigator.of(context)
-                      .push(CupertinoPageRoute(builder: (_) => CreatePost()));
-                },
-              ),
               ListTile(
                 leading: Icon(
                   CupertinoIcons.money_dollar_circle,

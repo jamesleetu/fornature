@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,7 +7,6 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fornature/models/user.dart';
 import 'package:fornature/utils/firebase.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
 
@@ -50,6 +48,7 @@ class _QrcodeScannerState extends State<QrcodeScanner> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
         leading: IconButton(
           icon: Icon(Feather.x),
           onPressed: () {
@@ -57,7 +56,7 @@ class _QrcodeScannerState extends State<QrcodeScanner> {
           },
         ),
         automaticallyImplyLeading: false,
-        title: Text('QR 스캐너'),
+        title: Text('QR 코드 스캔'),
         centerTitle: true,
       ),
       body: Builder(
@@ -66,21 +65,15 @@ class _QrcodeScannerState extends State<QrcodeScanner> {
             color: Colors.white,
             child: Column(
               children: <Widget>[
-                TextField(
-                  controller: this._outputController,
-                  maxLines: 2,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.wrap_text),
-                    hintText: 'QR 값이 표시됩니다.',
-                    hintStyle: TextStyle(fontSize: 20),
+                SizedBox(height: 50),
+                Text(
+                  "매장에 비치된 QR코드를 스캔하여\n    자신의 방문을 기록해보세요!",
+                  style: TextStyle(
+                    fontSize: 18.0,
                   ),
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 50),
                 this._buttonGroup(context),
-                SizedBox(height: 70),
-                Expanded(
-                  child: Text("제로 웨이스트 샵을 방문하여 자신의 방문 일지를 기록해 보세요!"),
-                ),
               ],
             ),
           );
@@ -90,73 +83,42 @@ class _QrcodeScannerState extends State<QrcodeScanner> {
   }
 
   Widget _buttonGroup(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        Expanded(
-          flex: 1,
-          child: SizedBox(
-            height: 120,
-            child: InkWell(
-              onTap: () async {
-                bool snackbarflag = await _scan();
-                SnackBar snackBar;
-                if (snackbarflag == true) {
-                  print("성공");
-                  snackBar = new SnackBar(
-                      content: new Text('제로웨이스트 매장을 방문하여, 1회 방문 기록이 추가되었습니다.'));
-                  Scaffold.of(context).showSnackBar(snackBar);
-                } else {
-                  print("실패");
-                  snackBar = new SnackBar(
-                      content: new Text('해당 QR 코드가 아닙니다. 다시 시도해주세요'));
-                  Scaffold.of(context).showSnackBar(snackBar);
-                }
-              },
-              child: Card(
-                child: Column(
-                  children: <Widget>[
-                    Expanded(
-                      flex: 2,
-                      child: Image.asset('assets/images/qr.png'),
-                    ),
-                    Divider(height: 20),
-                    Expanded(flex: 1, child: Text("Scan")),
-                  ],
+    return Stack(
+      children: [
+        Align(
+          alignment: Alignment.topCenter,
+          child: InkWell(
+            onTap: () async {
+              bool snackbarflag = await _scan();
+              SnackBar snackBar;
+              if (snackbarflag == true) {
+                snackBar = new SnackBar(
+                    content: new Text('제로웨이스트 매장을 방문하여,\n방문 기록이 1회 추가되었습니다.'));
+                Scaffold.of(context).showSnackBar(snackBar);
+                handlevisithistory();
+              } else {
+                snackBar = new SnackBar(
+                    content: new Text('해당 QR 코드가 아닙니다.\n다시 시도해주세요.'));
+                Scaffold.of(context).showSnackBar(snackBar);
+              }
+            },
+            child: Container(
+              width: 140,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.black12, width: 1.0),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10.0),
                 ),
               ),
-            ),
-          ),
-        ),
-        Expanded(
-          flex: 1,
-          child: SizedBox(
-            height: 120,
-            child: InkWell(
-              onTap: () async {
-                bool snackbarflag = await _scanPhoto();
-                SnackBar snackBar;
-                if (snackbarflag == true) {
-                  print("성공");
-                  snackBar = new SnackBar(
-                      content: new Text('제로웨이스트 매장을 방문하여, 1회 방문 기록이 추가되었습니다.'));
-                  Scaffold.of(context).showSnackBar(snackBar);
-                  handlevisithistory();
-                } else {
-                  print("실패");
-                  snackBar = new SnackBar(
-                      content: new Text('해당 QR 코드가 아닙니다. 다시 시도해주세요'));
-                  Scaffold.of(context).showSnackBar(snackBar);
-                }
-              },
-              child: Card(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: Column(
                   children: <Widget>[
-                    Expanded(
-                      flex: 2,
-                      child: Image.asset('assets/images/qr.png'),
+                    Image.asset('assets/images/qr.png'),
+                    Divider(height: 10),
+                    Text(
+                      "방문 기록하기",
                     ),
-                    Divider(height: 20),
-                    Expanded(flex: 1, child: Text("Scan Photo")),
                   ],
                 ),
               ),
@@ -184,75 +146,31 @@ class _QrcodeScannerState extends State<QrcodeScanner> {
     }
   }
 
-  Future<bool> _scanPhoto() async {
-    await Permission.storage.request();
-    try {
-      String barcode = await scanner.scanPhoto();
-      if (barcode == null) return false;
-      this._outputController.text = barcode;
-      if (this._outputController.text == null)
-        return false;
-      else {
-        if (this._outputController.text == "chgodrlf") return true;
-      }
-      return false;
-    } on FormatException {
-      return false;
-    }
-  }
-
-  Future _scanBytes() async {
-    File _image;
-    final picker = ImagePicker();
-    final file = await picker.getImage(source: ImageSource.camera);
-    if (file == null) return;
-    _image = File(file.path);
-    Uint8List bytes = _image.readAsBytesSync();
-    String barcode = await scanner.scanBytes(bytes);
-    this._outputController.text = barcode;
-  }
-
   handlevisithistory() async {
-    //  DocumentSnapshot doc = await visithistoryRef.doc(currentUserId()).get();
-    //   users = UserModel.fromJson(doc.data());
-    // print(currentUserId());
-    //  DocumentSnapshot doc = await visithistoryRef.doc(currentUserId()).get();
+    var count;
+
     if (isvisitHistory == false) {
-      print("안뇽?");
-      await visithistoryRef
-          .doc(currentUserId())
-          .collection('visithistory')
-          .doc(currentUserId())
-          .set({
-        'ID': currentUserId(),
-        'Count': 1,
-      });
+      count = 1;
       this.isvisitHistory = true;
     } else {
-      print("hihi");
-      /* Future<DocumentSnapshot<Map<String, dynamic>>> count = visithistoryRef
-          .doc(currentUserId())
-          .collection('visithistory')
-          .doc(currentUserId())*/
-      var count;
       await visithistoryRef
           .doc(currentUserId())
           .collection('visithistory')
           .doc(currentUserId())
           .get()
           .then((DocumentSnapshot ds) {
-        print(ds.get('Count'));
         count = ds.get('Count') + 1;
       });
-
-      await visithistoryRef
-          .doc(currentUserId())
-          .collection('visithistory')
-          .doc(currentUserId())
-          .set({
-        'ID': currentUserId(),
-        'Count': count,
-      });
+      print(count);
     }
+
+    await visithistoryRef
+        .doc(currentUserId())
+        .collection('visithistory')
+        .doc(currentUserId())
+        .set({
+      'ID': currentUserId(),
+      'Count': count,
+    });
   }
 }
