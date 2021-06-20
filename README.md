@@ -47,7 +47,7 @@ $ flutter build apk --release
 ```
 
 ## Used packages
-Version control (You can check thorugh [pub.dev](https://pub.dev/)
+Version control (You can check thorugh [pub.dev](https://pub.dev/))
 ```yaml
 dependencies:
   flutter:
