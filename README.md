@@ -22,7 +22,7 @@
    * Follow / Unfollow Users
  * Notifications Feed showing recent likes / comments of your posts + new followers
  * Swipe to delete notification
- * Kakao pay mock up
+ * Kakao pay mock up with node.js
 
 ## Installation
 
