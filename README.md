@@ -1,4 +1,4 @@
-# 캡스톤디자인1 프로젝트
+# 제로웨이스트 샵 지도와 커뮤니티 
 
 ## Requirements
 * Any Operating System (ie. MacOS X, Linux, Windows)
